@@ -13,7 +13,7 @@
 #ifdef _MSC_VER
 #if _MSC_VER >= 1600		// Visual Studio 2010
 #define UTF8_CONVERTER_TYPE UTF8_CONVERTER_TYPE_CODECVT
-#elif _WINDOWS_
+#else
 #define UTF8_CONVERTER_TYPE UTF8_CONVERTER_TYPE_WINAPI
 #endif
 #else
