@@ -202,10 +202,10 @@ struct CharType_Implement : public CharType_Implement_Base< char >
 {
 	typedef CharType_Implement_Base< char > _Base;
 
-	typedef typename _Base::_ElemX _ElemX;
-	typedef typename _Base::_ElemY _ElemY;
-	typedef typename _Base::_StrX _StrX;
-	typedef typename _Base::_StrY _StrY;
+	typedef _Base::_ElemX _ElemX;
+	typedef _Base::_ElemY _ElemY;
+	typedef _Base::_StrX _StrX;
+	typedef _Base::_StrY _StrY;
 
 	static void xtoutf8(std::string& strDst, const _ElemX* lpszSrc)
 	{
@@ -241,10 +241,10 @@ struct CharType_Implement< wchar_t > : public CharType_Implement_Base< wchar_t >
 {
 	typedef CharType_Implement_Base< wchar_t > _Base;
 
-	typedef typename _Base::_ElemX _ElemX;
-	typedef typename _Base::_ElemY _ElemY;
-	typedef typename _Base::_StrX _StrX;
-	typedef typename _Base::_StrY _StrY;
+	typedef _Base::_ElemX _ElemX;
+	typedef _Base::_ElemY _ElemY;
+	typedef _Base::_StrX _StrX;
+	typedef _Base::_StrY _StrY;
 
 	static void xtoutf8(std::string& strDst, const _ElemX* lpszSrc)
 	{
