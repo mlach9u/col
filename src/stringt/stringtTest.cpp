@@ -71,30 +71,20 @@ void testUtf8(const basic_string< _Elem >& str)
 	std::cout << "   _ElemY from UTF-8 : ";		showhex(strY.fromutf8(strUtf8));
 }
 
-void testFormat(const string& str)
+template< typename _Elem >
+void testFormat(const basic_string< _Elem >& str)
 {
 	std::cout << "== Format test" << std::endl;
 
-	string strANSI;
-	strANSI.format("%s", str.c_str());
-	std::cout << "    char format :      ";		showhex(strANSI);
+	typename basic_string< _Elem >::_ThisX strFormat("%s");
 
-	wstring strUNICODE;
-	strUNICODE.format("%s", str.c_str());
-	std::cout << "    wchar_t format :   ";		showhex(strUNICODE);
-}
+	typename basic_string< _Elem >::_ThisX strX;
+	strX.format(strFormat.c_str(), str.c_str());
+	std::cout << "    _ElemX format :    ";		showhex(strX);
 
-void testFormat(const wstring& str)
-{
-	std::cout << "== Format test" << std::endl;
-
-	string strANSI;
-	strANSI.format(L"%s", str.c_str());
-	std::cout << "    char format :      ";		showhex(strANSI);
-
-	wstring strUNICODE;
-	strUNICODE.format(L"%s", str.c_str());
-	std::cout << "    wchar_t format :   ";		showhex(strUNICODE);
+	typename basic_string< _Elem >::_ThisY strY;
+	strY.format(strFormat.c_str(), str.c_str());
+	std::cout << "    _ElemY format :    ";		showhex(strY);
 }
 
 template< typename _Elem >
