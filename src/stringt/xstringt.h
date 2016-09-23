@@ -66,7 +66,7 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
 
 	static void _formatV(_StrX& strDst, const _StrX& strFormat, va_list v)
 	{
-		int nSize, nBufferSize = strFormat.size() * 2;
+		int nSize, nBufferSize = (int)(strFormat.size() * 2);
 		_ElemX* pszBuffer = new _ElemX[nBufferSize];
 		do
 		{

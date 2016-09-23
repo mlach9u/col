@@ -16,7 +16,7 @@ void showhex(const unsigned char* pData, int cb)
 template< typename _Elem >
 void showhex(const std::basic_string< _Elem >& str)
 {
-	showhex((const unsigned char*)str.c_str(), str.size() * sizeof(_Elem));
+	showhex((const unsigned char*)str.c_str(), (int)(str.size() * sizeof(_Elem)));
 }
 
 template< typename _Elem >
