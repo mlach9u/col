@@ -20,9 +20,9 @@ void showhex(const std::basic_string< _Elem >& str)
 }
 
 template< typename _Elem >
-void testContructor(const basic_string< _Elem >& str)
+void testConstructor(const basic_string< _Elem >& str)
 {
-	std::cout << "== Contructor test" << std::endl;
+	std::cout << "== Constructor test" << std::endl;
 
 	typename basic_string< _Elem >::_ThisX strX(str.c_str());
 	std::cout << "   To _ElemX :         ";		showhex(strX);
@@ -92,7 +92,7 @@ void test(const basic_string< _Elem >& str)
 {
 	std::cout << "From : ";		showhex(str);
 
-	testContructor(str);
+	testConstructor(str);
 	testAssignment(str);
 	testExplicit(str);
 	testUtf8(str);
