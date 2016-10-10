@@ -31,7 +31,7 @@ namespace something
 ###Concept
 
 1. This is template class extended from `std::basic_string`.
-2. This is designed for convert between ANSI and UNICODE and UTF-8.
+2. This is designed for convert between ASCII and UNICODE and UTF-8.
 
 ###Notice
 
@@ -57,7 +57,7 @@ Some functions in `basic_string` template class are influenced by locale informa
 
 ###Usage
 
-####Convert between ANSI and UNICODE
+####Convert between ASCII and UNICODE
 
 #####Use constructor
 >```cpp
@@ -117,4 +117,4 @@ strSecond.fromutf8(strUtf8);
 
 #####Limitation
 
-`basic_string` template class can't determine whether string is ANSI or UTF-8.
+`basic_string` template class can't determine whether string is ASCII or UTF-8.
