@@ -8,8 +8,6 @@ struct CharType_Function
 {
 	typedef char _ElemX;
 	typedef wchar_t _ElemY;
-	typedef std::basic_string< _ElemX > _StrX;
-	typedef std::basic_string< _ElemY > _StrY;
 
 	static int vsprintf(_ElemX* lpszDst, size_t cchMax, const _ElemX* lpszFormat, va_list args)
 	{
@@ -35,8 +33,6 @@ struct CharType_Function< wchar_t >
 {
 	typedef wchar_t _ElemX;
 	typedef char _ElemY;
-	typedef std::basic_string< _ElemX > _StrX;
-	typedef std::basic_string< _ElemY > _StrY;
 
 	static int vsprintf(_ElemX* lpszDst, size_t cchMax, const _ElemX* lpszFormat, va_list args)
 	{
@@ -61,8 +57,8 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
 
 	typedef typename _Base::_ElemX _ElemX;
 	typedef typename _Base::_ElemY _ElemY;
-	typedef typename _Base::_StrX _StrX;
-	typedef typename _Base::_StrY _StrY;
+	typedef std::basic_string< _ElemX > _StrX;
+	typedef std::basic_string< _ElemY > _StrY;
 
 	static void _formatV(_StrX& strDst, const _StrX& strFormat, va_list v)
 	{
