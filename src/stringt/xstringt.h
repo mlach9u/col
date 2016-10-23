@@ -121,9 +121,16 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
 	}
 };
 
-#if (UTF8_CONVERTER_TYPE == UTF8_CONVERTER_TYPE_CODECVT)
+#ifndef __STRINGT_UTF8CONVERTER__
+#ifdef _CODECVT_
+#define __STRINGT_UTF8CONVERTER__
 typedef std::wstring_convert< std::codecvt_utf8< wchar_t > > utf8converter;
-#elif (UTF8_CONVERTER_TYPE == UTF8_CONVERTER_TYPE_WINAPI)
+#endif
+#endif
+
+#ifndef __STRINGT_UTF8CONVERTER__
+#ifdef _WINDOWS_
+#define __STRINGT_UTF8CONVERTER__
 struct utf8converter
 {
 	std::string to_bytes(const wchar_t* lpsz)
@@ -190,7 +197,11 @@ struct utf8converter
 		return strRet;
 	}
 };
-#else
+#endif
+#endif
+
+#ifndef __STRINGT_UTF8CONVERTER__
+#error "UTF-8 converter is not defined."
 #endif
 
 template< typename _Elem = char >

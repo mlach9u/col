@@ -6,24 +6,24 @@
 #include <cstdlib>
 #include <string>
 
-#define UTF8_CONVERTER_TYPE_CODECVT		1	// use std::wstring_convert< std::codecvt_utf8< wchar_t > >
-#define UTF8_CONVERTER_TYPE_WINAPI		2	// use WideCharToMultiByte and MultiByteToWideChar functions
-
-#ifndef UTF8_CONVERTER_TYPE
 #ifdef _MSC_VER
-#if _MSC_VER >= 1600		// Visual Studio 2010
-#define UTF8_CONVERTER_TYPE UTF8_CONVERTER_TYPE_CODECVT
-#else
-#define UTF8_CONVERTER_TYPE UTF8_CONVERTER_TYPE_WINAPI
+#if _MSC_VER < 1600							// [..., VS2010)
+#define __STRINGT_INCLUSION_CODECVT__	0
+#define __STRINGT_INCLUSION_WINDOWS_H__ 1
+#else										// [VS2010, ...)
+#define __STRINGT_INCLUSION_CODECVT__	1
+#define __STRINGT_INCLUSION_WINDOWS_H__ 0
 #endif
-#else
-#define UTF8_CONVERTER_TYPE UTF8_CONVERTER_TYPE_CODECVT
-#endif
+#else										// !Visual Studio
+#define __STRINGT_INCLUSION_CODECVT__	1
+#define __STRINGT_INCLUSION_WINDOWS_H__ 0
 #endif
 
-#if (UTF8_CONVERTER_TYPE == UTF8_CONVERTER_TYPE_CODECVT)
+#if __STRINGT_INCLUSION_CODECVT__
 #include <codecvt>
-#elif (UTF8_CONVERTER_TYPE == UTF8_CONVERTER_TYPE_WINAPI)
+#endif
+
+#if __STRINGT_INCLUSION_WINDOWS_H__
 #include <Windows.h>
 #endif
 
