@@ -7,6 +7,8 @@ template< typename _Elem, typename _Implement = CharType_Implement< _Elem > >
 class basic_string : public std::basic_string< _Elem >
 {
 public:
+	static_assert(is_char< _Elem >::value, "_Elem must be char type.");
+
 	typedef std::basic_string< _Elem > _Base;
 
 	typedef typename _Base::value_type value_type;

@@ -118,5 +118,7 @@ int main(int argc, char* argv[])
 	test(strBaseUNICODE);
 	std::cout << "==================================" << "\n\n";
 
+	//basic_string< int > strInt;
+
 	return 0;
 }

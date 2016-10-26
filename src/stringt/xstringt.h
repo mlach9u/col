@@ -2,6 +2,7 @@
 #define __XSTRINGT_H__
 
 #include "inclusion_stringt.h"
+#include "..\\col_type_traits\\col_type_traits.h"
 
 template< typename _Elem = char >
 struct CharType_Function
