@@ -104,7 +104,6 @@
 #ifndef __COL_STATIC_ASSERT__
 #define __COL_STATIC_ASSERT__		1
 #endif
-#endif
 
 #ifndef __COL_CHAR16_T__
 #define __COL_CHAR16_T__			1
@@ -112,6 +111,8 @@
 
 #ifndef __COL_CHAR32_T__
 #define __COL_CHAR32_T__			1
+#endif
+
 #endif
 
 #else										// !Visual Studio
