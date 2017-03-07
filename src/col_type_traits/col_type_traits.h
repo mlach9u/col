@@ -81,6 +81,28 @@ template< bool b >
 struct bool_constant : integral_constant< bool, b > {};
 #endif
 
+template< typename _Ty, _Ty _First, _Ty _Second >
+struct integral_pair
+{
+	typedef _Ty value_type;
+	typedef integral_pair< _Ty, _First, _Second > type;
+
+	typedef integral_constant< _Ty, _First > first_type;
+	typedef integral_constant< _Ty, _Second > second_type;
+
+	typedef typename first_type::value_type first_value_type;
+	typedef typename second_type::value_type second_value_type;
+
+	static first_value_type first_value() { return first_type::value; }
+	static second_value_type second_value() { return second_type::value; }
+};
+
+template< typename _Ty, _Ty _Val1, _Ty _Val2 >
+struct is_same_value : false_type {};
+
+template< typename _Ty, _Ty _Val >
+struct is_same_value< _Ty, _Val, _Val > : true_type {};
+
 template< typename _Ty > struct col_is_char : false_type {};
 template<> struct col_is_char< char > : true_type {};
 template<> struct col_is_char< wchar_t > : true_type {};

@@ -25,6 +25,10 @@
 #define __COL_CHAR32_T__			0
 #endif
 
+#ifndef __COL_VARIADIC_TEMPLATES__
+#define __COL_VARIADIC_TEMPLATES__	0
+#endif
+
 #elif _MSC_VER < 1700						// [VS2010, VS2012)
 
 #ifndef __COL_CONSTEXPR__
@@ -45,6 +49,10 @@
 
 #ifndef __COL_CHAR32_T__
 #define __COL_CHAR32_T__			0
+#endif
+
+#ifndef __COL_VARIADIC_TEMPLATES__
+#define __COL_VARIADIC_TEMPLATES__	0
 #endif
 
 #elif _MSC_VER < 1800						// [VS2012, VS2013)
@@ -69,6 +77,10 @@
 #define __COL_CHAR32_T__			0
 #endif
 
+#ifndef __COL_VARIADIC_TEMPLATES__
+#define __COL_VARIADIC_TEMPLATES__	0
+#endif
+
 #elif _MSC_VER < 1900						// [VS2013, VS2015)
 
 #ifndef __COL_CONSTEXPR__
@@ -89,6 +101,10 @@
 
 #ifndef __COL_CHAR32_T__
 #define __COL_CHAR32_T__			0
+#endif
+
+#ifndef __COL_VARIADIC_TEMPLATES__
+#define __COL_VARIADIC_TEMPLATES__	1
 #endif
 
 #else										// [VS2015, ...)
@@ -113,6 +129,10 @@
 #define __COL_CHAR32_T__			1
 #endif
 
+#ifndef __COL_VARIADIC_TEMPLATES__
+#define __COL_VARIADIC_TEMPLATES__	1
+#endif
+
 #endif
 
 #else										// !Visual Studio
@@ -135,6 +155,10 @@
 
 #ifndef __COL_CHAR32_T__
 #define __COL_CHAR32_T__			1
+#endif
+
+#ifndef __COL_VARIADIC_TEMPLATES__
+#define __COL_VARIADIC_TEMPLATES__	1
 #endif
 
 #endif

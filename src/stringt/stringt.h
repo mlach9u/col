@@ -3,8 +3,10 @@
 
 #include "xstringt.h"
 
-template< typename _Elem, typename _Implement = CharType_Implement< _Elem > >
-class basic_string : public std::basic_string< _Elem >
+template< typename _Elem,
+	typename _Traits = std::char_traits< _Elem >,
+	typename _Ax = std::allocator< _Elem > >
+class basic_string : public std::basic_string< _Elem, _Traits, _Ax >
 {
 public:
 	static_assert(is_char< _Elem >::value, "_Elem must be char type.");
@@ -23,6 +25,7 @@ public:
 	typedef typename _Base::reverse_iterator reverse_iterator;
 	typedef typename _Base::const_reverse_iterator const_reverse_iterator;
 
+	typedef CharType_Implement< _Elem > _Implement;
 	typedef typename _Implement::_ElemX _ElemX;
 	typedef typename _Implement::_ElemY _ElemY;
 	typedef typename _Implement::_StrX _StrX;
