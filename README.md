@@ -1,27 +1,27 @@
 
-#Collection of libraries.
+# Collection of libraries.
 
 ---
 
-##Notice
+## Notice
 
-> These are in global namespace. To declare in other namespace, following this:
+These are in global namespace. To declare in other namespace, following this:
 
->1. Include `inclusion_xxx.h` file in global namespace.
->2. Include the main file in available namespace.
+1. Include `inclusion_xxx.h` file in global namespace.
+2. Include the main file in available namespace.
 
-> For example,
+For example,
 
->```cpp
+```cpp
 #include "src\\stringt\\inclusion_stringt.h"
 namespace something
 {
 #include "src\\stringt\\stringt.h"
 }
->```
+```
 
->If you use these in global namespace, you should not use `using namespace std;`.
+If you use these in global namespace, you should not use `using namespace std;`.
 
-##License
+## License
 
-> These are in the Public Domain.
+These are in the Public Domain.
