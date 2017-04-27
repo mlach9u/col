@@ -5,8 +5,8 @@
 
 ### Purpose
 
-1. Determine usable Modern C++ features.
-2. Define some macros.
+1. Determined usable Modern C++ features.
+2. Defined some macros.
 
 ### Notice
 

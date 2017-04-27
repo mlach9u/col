@@ -5,7 +5,7 @@
 ### Purpose
 
 1. Adapter of `type_traits` header.
-2. Define several new type traits.
+2. Defined several new type traits.
 
 ### Adapter of `type_traits` header.
 
@@ -16,7 +16,7 @@ For example, to use `is_same` struct:
 
 This header adapt to current namespace.
 
-### Define several new type traits
+### Defined several new type traits
 
 #### `integral_pair` wraps two static constants of specified type.
 

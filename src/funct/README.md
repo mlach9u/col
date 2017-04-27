@@ -4,9 +4,9 @@
 
 ### Purpose
 
-1. Define several new functors.
+1. Defined several new functors.
 
-### Define several new functors
+### Defined several new functors
 
 1. Range predicate
 2. Complex assignment operator
