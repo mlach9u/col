@@ -84,7 +84,10 @@ private:
 		for (int i = 0; (i < _Cch) && (_First != _Last); i++, _First++)
 			_Buff[i] = *_First;
 		if (_First == _Last)
+		{
 			_State |= std::ios_base::eofbit;
+			memset(&_Buff[i], _Elem(), ((_Cch - i) * sizeof(_Elem)));
+		}
 		memcpy(&_Val, _Buff, sizeof(_Vty));
 		return _First;
 	}
