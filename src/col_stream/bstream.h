@@ -3,14 +3,58 @@
 
 #include "col_stream.h"
 
+template< typename _Elem, typename _OutIt >
+struct bin_num_put_operator
+{
+	template< typename _Vty >
+	_OutIt operator()(_OutIt _Dest, std::ios_base& _Iosbase, _Elem _Fill, _Vty _Val) const
+	{
+		int _Cch = (sizeof(_Vty) / sizeof(_Elem)) + (sizeof(_Vty) % sizeof(_Elem));
+		_Elem _Buff[(sizeof(_Vty) / sizeof(_Elem)) + (sizeof(_Vty) % sizeof(_Elem))];
+		memset(_Buff, 0, _Cch * sizeof(_Elem));
+		memcpy(_Buff, &_Val, sizeof(_Vty));
+		for (int i = 0; i < _Cch; i++, _Dest++)
+			*_Dest = _Buff[i];
+		return _Dest;
+	}
+};
+
+template< typename _Elem, typename _InIt >
+struct bin_num_get_operator
+{
+	template< typename _Vty >
+	_InIt operator()(_InIt _First, _InIt _Last, std::ios_base& _Iosbase, std::ios_base::iostate& _State, _Vty& _Val) const
+	{
+		int _Cch = (sizeof(_Vty) / sizeof(_Elem)) + (sizeof(_Vty) % sizeof(_Elem));
+		_Elem _Buff[(sizeof(_Vty) / sizeof(_Elem)) + (sizeof(_Vty) % sizeof(_Elem))];
+
+		int i;
+		for (i = 0; (i < _Cch) && (_First != _Last); i++, _First++)
+			_Buff[i] = *_First;
+		if (_First == _Last)
+		{
+			_State |= std::ios_base::eofbit;
+			memset(&_Buff[i], _Elem(), ((_Cch - i) * sizeof(_Elem)));
+		}
+		memcpy(&_Val, _Buff, sizeof(_Vty));
+		return _First;
+	}
+};
+
 template< typename _Elem, typename _Traits >
 std::basic_ostream< _Elem, _Traits >& __cdecl bins(std::basic_ostream< _Elem, _Traits >& _Ostr)
 {
+	typedef typename basic_ostream< _Elem, _Traits >::_Iter _Iter;
 	typedef typename basic_ostream< _Elem, _Traits >::_Nput _Nput;
 	typedef typename basic_ostream< _Elem, _Traits >::_col_Nput _col_Nput;
+
+	typedef num_put< _Elem, _Iter, bin_num_put_operator > _bin_Nput;
+
 	if (dynamic_cast<const _col_Nput*>(&(std::use_facet< _Nput >(_Ostr.getloc()))) == 0)
-		_Ostr.imbue(std::locale(_Ostr.getloc(), new _col_Nput));
-	_Ostr.iword(__col_stream_index__) = __col_snibinary;
+	{
+		_Ostr.imbue(std::locale(_Ostr.getloc(), new _bin_Nput()));
+		_Ostr.iword(__col_stream_index__)++;
+	}
 	return _Ostr;
 }
 
@@ -19,32 +63,44 @@ std::basic_ostream< _Elem, _Traits >& __cdecl nobins(std::basic_ostream< _Elem, 
 {
 	typedef typename basic_ostream< _Elem, _Traits >::_Nput _Nput;
 	typedef typename basic_ostream< _Elem, _Traits >::_col_Nput _col_Nput;
-	_Ostr.iword(__col_stream_index__) = __col_sninothing;
+
 	if (dynamic_cast<const _col_Nput*>(&(std::use_facet< _Nput >(_Ostr.getloc()))) != 0)
+	{
+		_Ostr.iword(__col_stream_index__)--;
 		_Ostr.imbue(std::locale(_Ostr.getloc(), new _Nput));
+	}
 	return _Ostr;
 }
 
 template< typename _Elem, typename _Traits >
-std::basic_istream< _Elem, _Traits >& __cdecl bins(std::basic_istream< _Elem, _Traits >& _Ostr)
+std::basic_istream< _Elem, _Traits >& __cdecl bins(std::basic_istream< _Elem, _Traits >& _Istr)
 {
+	typedef typename basic_istream< _Elem, _Traits >::_Iter _Iter;
 	typedef typename basic_istream< _Elem, _Traits >::_Nget _Nget;
 	typedef typename basic_istream< _Elem, _Traits >::_col_Nget _col_Nget;
-	if (dynamic_cast<const _col_Nget*>(&(std::use_facet< _Nget >(_Ostr.getloc()))) == 0)
-		_Ostr.imbue(std::locale(_Ostr.getloc(), new _col_Nget));
-	_Ostr.iword(__col_stream_index__) = __col_snibinary;
-	return _Ostr;
+
+	typedef num_get< _Elem, _Iter, bin_num_get_operator > _bin_Nget;
+
+	if (dynamic_cast<const _col_Nget*>(&(std::use_facet< _Nget >(_Istr.getloc()))) == 0)
+	{
+		_Istr.imbue(std::locale(_Istr.getloc(), new _bin_Nget));
+		_Istr.iword(__col_stream_index__)++;
+	}
+	return _Istr;
 }
 
 template< typename _Elem, typename _Traits >
-std::basic_istream< _Elem, _Traits >& __cdecl nobins(std::basic_istream< _Elem, _Traits >& _Ostr)
+std::basic_istream< _Elem, _Traits >& __cdecl nobins(std::basic_istream< _Elem, _Traits >& _Istr)
 {
 	typedef typename basic_istream< _Elem, _Traits >::_Nget _Nget;
 	typedef typename basic_istream< _Elem, _Traits >::_col_Nget _col_Nget;
-	_Ostr.iword(__col_stream_index__) = __col_sninothing;
-	if (dynamic_cast<const _col_Nget*>(&(std::use_facet< _Nget >(_Ostr.getloc()))) != 0)
-		_Ostr.imbue(std::locale(_Ostr.getloc(), new _Nget));
-	return _Ostr;
+
+	if (dynamic_cast<const _col_Nget*>(&(std::use_facet< _Nget >(_Istr.getloc()))) != 0)
+	{
+		_Istr.iword(__col_stream_index__)--;
+		_Istr.imbue(std::locale(_Istr.getloc(), new _Nget));
+	}
+	return _Istr;
 }
 
 template< typename _Elem, typename _Traits = std::char_traits< _Elem >, typename _Alloc = std::allocator< _Elem > >

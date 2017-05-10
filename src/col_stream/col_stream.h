@@ -13,7 +13,8 @@ public:
 	typedef typename _Base::_Mysb _Mysb;
 	typedef typename _Base::_Iter _Iter;
 	typedef typename _Base::_Nput _Nput;
-	typedef num_put< _Elem, _Iter > _col_Nput;
+
+	typedef num_put_interface< _Elem, _Iter > _col_Nput;
 
 	explicit basic_ostream(_Mysb* _Strbuf)
 		: _Base(_Strbuf)
@@ -26,7 +27,7 @@ public:
 	_Myt& _Put_arithmetic(_Vty _Val)
 	{
 		static_assert(is_arithmetic< _Vty >::value, "Integer or floating point required");
-		if (iword(__col_stream_index__) == __col_sninothing)
+		if (iword(__col_stream_index__) == 0)
 		{
 			*(_Base*)this << _Val;
 			return *this;
@@ -95,7 +96,8 @@ public:
 	typedef typename _Base::_Mysb _Mysb;
 	typedef typename _Base::_Iter _Iter;
 	typedef typename _Base::_Nget _Nget;
-	typedef num_get< _Elem, _Iter > _col_Nget;
+
+	typedef num_get_interface< _Elem, _Iter > _col_Nget;
 
 	explicit basic_istream(_Mysb* _Strbuf)
 		: _Base(_Strbuf)
@@ -108,7 +110,7 @@ public:
 	_Myt& _Get_arithmetic(_Vty& _Val)
 	{
 		static_assert(is_arithmetic< _Vty >::value, "Integer or floating point required");
-		if (iword(__col_stream_index__) == __col_sninothing)
+		if (iword(__col_stream_index__) == 0)
 		{
 			*(_Base*)this >> _Val;
 			return *this;
