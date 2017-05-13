@@ -51,10 +51,8 @@ std::basic_ostream< _Elem, _Traits >& __cdecl bins(std::basic_ostream< _Elem, _T
 	typedef num_put< _Elem, _Iter, bin_num_put_operator > _bin_Nput;
 
 	if (dynamic_cast<const _col_Nput*>(&(std::use_facet< _Nput >(_Ostr.getloc()))) == 0)
-	{
 		_Ostr.imbue(std::locale(_Ostr.getloc(), new _bin_Nput()));
-		_Ostr.iword(__col_stream_index__)++;
-	}
+	_Ostr.iword(__col_stream_index__) |= __col_sfNput;
 	return _Ostr;
 }
 
@@ -64,11 +62,9 @@ std::basic_ostream< _Elem, _Traits >& __cdecl nobins(std::basic_ostream< _Elem, 
 	typedef typename basic_ostream< _Elem, _Traits >::_Nput _Nput;
 	typedef typename basic_ostream< _Elem, _Traits >::_col_Nput _col_Nput;
 
+	_Ostr.iword(__col_stream_index__) &= ~__col_sfNput;
 	if (dynamic_cast<const _col_Nput*>(&(std::use_facet< _Nput >(_Ostr.getloc()))) != 0)
-	{
-		_Ostr.iword(__col_stream_index__)--;
 		_Ostr.imbue(std::locale(_Ostr.getloc(), new _Nput));
-	}
 	return _Ostr;
 }
 
@@ -82,10 +78,8 @@ std::basic_istream< _Elem, _Traits >& __cdecl bins(std::basic_istream< _Elem, _T
 	typedef num_get< _Elem, _Iter, bin_num_get_operator > _bin_Nget;
 
 	if (dynamic_cast<const _col_Nget*>(&(std::use_facet< _Nget >(_Istr.getloc()))) == 0)
-	{
 		_Istr.imbue(std::locale(_Istr.getloc(), new _bin_Nget));
-		_Istr.iword(__col_stream_index__)++;
-	}
+	_Istr.iword(__col_stream_index__) |= __col_sfNget;
 	return _Istr;
 }
 
@@ -95,11 +89,9 @@ std::basic_istream< _Elem, _Traits >& __cdecl nobins(std::basic_istream< _Elem, 
 	typedef typename basic_istream< _Elem, _Traits >::_Nget _Nget;
 	typedef typename basic_istream< _Elem, _Traits >::_col_Nget _col_Nget;
 
+	_Istr.iword(__col_stream_index__) &= ~__col_sfNget;
 	if (dynamic_cast<const _col_Nget*>(&(std::use_facet< _Nget >(_Istr.getloc()))) != 0)
-	{
-		_Istr.iword(__col_stream_index__)--;
 		_Istr.imbue(std::locale(_Istr.getloc(), new _Nget));
-	}
 	return _Istr;
 }
 

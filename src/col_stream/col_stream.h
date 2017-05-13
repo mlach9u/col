@@ -3,6 +3,16 @@
 
 #include "col_xstream.h"
 
+int __col_stream_index__ = std::ios_base::xalloc();
+
+enum __col_Stream_Flag
+{
+	__col_sfNput = 0x00000001,
+	__col_sfNget = 0x00000002,
+
+	__col_sfLast = 0x00000000
+};
+
 template< typename _Elem, typename _Traits = std::char_traits< _Elem > >
 class basic_ostream : public std::basic_ostream< _Elem, _Traits >
 {
@@ -27,7 +37,7 @@ public:
 	_Myt& _Put_arithmetic(_Vty _Val)
 	{
 		static_assert(is_arithmetic< _Vty >::value, "Integer or floating point required");
-		if (iword(__col_stream_index__) == 0)
+		if ((iword(__col_stream_index__) & __col_sfNput) == 0)
 		{
 			*(_Base*)this << _Val;
 			return *this;
@@ -110,7 +120,7 @@ public:
 	_Myt& _Get_arithmetic(_Vty& _Val)
 	{
 		static_assert(is_arithmetic< _Vty >::value, "Integer or floating point required");
-		if (iword(__col_stream_index__) == 0)
+		if ((iword(__col_stream_index__) & __col_sfNget) == 0)
 		{
 			*(_Base*)this >> _Val;
 			return *this;
