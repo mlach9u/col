@@ -97,7 +97,7 @@ public:
 template< typename _Elem, typename _InIt,
 	template< typename _Elem, typename _InIt > class _NgetOper
 >
-class num_get : public std::num_get< _Elem, _InIt >
+class num_get : public num_get_interface< _Elem, _InIt >
 {
 private:
 	_NgetOper< _Elem, _InIt > op;
