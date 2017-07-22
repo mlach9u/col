@@ -4,4 +4,6 @@
 #include <Windows.h>
 #include <sstream>
 
+#include "..\\col_base\\col_base.h"
+
 #endif
