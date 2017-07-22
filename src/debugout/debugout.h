@@ -1,7 +1,7 @@
 #ifndef __COWL_DEBUGOUT_H__
 #define __COWL_DEBUGOUT_H__
 
-#include "cowl_xdebugout.h"
+#include "xdebugout.h"
 
 template< typename _Elem, typename _Traits, typename _Alloc >
 class basic_debugbuf : public std::basic_stringbuf< _Elem, _Traits, _Alloc >

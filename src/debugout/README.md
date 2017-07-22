@@ -1,4 +1,4 @@
-## Output debug stream(`cowl_debugout.h`)
+## Output debug stream(`debugout.h`)
 
 ---
 

@@ -2,7 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "cowl_debugout.h"
+#include "debugout.h"
 
 int main(int argc, char* argv[])
 {

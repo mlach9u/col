@@ -1,7 +1,7 @@
 #ifndef __COWL_XDEBUGOUT_H__
 #define __COWL_XDEBUGOUT_H__
 
-#include "inclusion_cowl_debugout.h"
+#include "inclusion_debugout.h"
 
 template< typename _Elem = char >
 struct OutputDebug_Function
