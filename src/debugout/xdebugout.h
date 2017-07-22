@@ -1,5 +1,5 @@
-#ifndef __COWL_XDEBUGOUT_H__
-#define __COWL_XDEBUGOUT_H__
+#ifndef __XDEBUGOUT_H__
+#define __XDEBUGOUT_H__
 
 #include "inclusion_debugout.h"
 
