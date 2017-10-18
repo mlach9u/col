@@ -110,7 +110,10 @@ public:
 		: _Base(_Str) {}
 
 	basic_binarybuf(const _Elem* _Ptr, size_t _Count)
-	{ _Init(_Ptr, _Count, 0); }
+	{
+		_Init(_Ptr, _Count, 0);
+		_Base::setp(_Base::pbase(), _Base::epptr(), _Base::epptr());
+	}
 
 	const _Elem* ptr() const
 	{
@@ -120,11 +123,6 @@ public:
 	size_t size() const
 	{
 		return ((_Base::pptr() == 0) ? 0 : (_Base::pptr() - _Base::eback()));
-	}
-
-	size_t max_size() const
-	{
-		return ((_Base::epptr() == 0) ? 0 : (_Base::epptr() - _Base::eback()));
 	}
 };
 
@@ -141,6 +139,44 @@ public:
 	{
 		bins(*this);
 	}
+
+	template< typename _Vty >
+	_Myt& _Put_arithmetic(_Vty _Val)
+	{
+		_Base::_Put_arithmetic(_Val);
+		return *this;
+	}
+
+	_Myt& operator<<(bool _Val)					{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(char _Val)					{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(unsigned char _Val)		{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(wchar_t _Val)				{ return _Put_arithmetic((short)_Val); }
+	_Myt& operator<<(short _Val)				{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(unsigned short _Val)		{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(int _Val)					{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(unsigned int _Val)			{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(long _Val)					{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(unsigned long _Val)		{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(long long _Val)			{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(unsigned long long _Val)	{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(float _Val)				{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(double _Val)				{ return _Put_arithmetic(_Val); }
+	_Myt& operator<<(long double _Val)			{ return _Put_arithmetic(_Val); }
+
+	_Myt& operator<<(_Myt& (__cdecl *_Pfn)(_Myt&))
+	{ return ((*_Pfn)(*this)); }
+
+	_Myt& operator<<(_Base& (__cdecl *_Pfn)(_Base&))
+	{ _Base::operator<<(_Pfn); return *this; }
+
+	_Myt& operator<<(_Myios& (__cdecl *_Pfn)(_Myios&))
+	{ _Base::operator<<(_Pfn); return *this; }
+
+	_Myt& operator<<(std::ios_base& (__cdecl *_Pfn)(std::ios_base&))
+	{ _Base::operator<<(_Pfn); return *this; }
+
+	_Myt& operator<<(const _Elem* p)
+	{ *(_Base*)this << p; return *this; }
 };
 
 template< typename _Elem, typename _Traits = std::char_traits< _Elem > >
@@ -156,6 +192,41 @@ public:
 	{
 		bins(*this);
 	}
+
+	template< typename _Vty >
+	_Myt& _Get_arithmetic(_Vty& _Val)
+	{
+		_Base::_Get_arithmetic(_Val);
+		return *this;
+	}
+
+	_Myt& operator >> (bool& _Val)					{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (char& _Val)					{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (unsigned char& _Val)			{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (wchar_t& _Val)				{ return _Get_arithmetic((short&)_Val); }
+	_Myt& operator >> (short& _Val)					{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (unsigned short& _Val)		{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (int& _Val)					{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (unsigned int& _Val)			{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (long& _Val)					{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (unsigned long& _Val)			{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (long long& _Val)				{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (unsigned long long& _Val)	{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (float& _Val)					{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (double& _Val)				{ return _Get_arithmetic(_Val); }
+	_Myt& operator >> (long double& _Val)			{ return _Get_arithmetic(_Val); }
+
+	_Myt& operator >> (_Myt& (__cdecl *_Pfn)(_Myt&))
+	{ return ((*_Pfn)(*this)); }
+
+	_Myt& operator >> (_Base& (__cdecl *_Pfn)(_Base&))
+	{ _Base::operator >> (_Pfn); return *this; }
+
+	_Myt& operator >> (_Myios& (__cdecl *_Pfn)(_Myios&))
+	{ _Base::operator >> (_Pfn); return *this; }
+
+	_Myt& operator >> (std::ios_base& (__cdecl *_Pfn)(std::ios_base&))
+	{ _Base::operator >> (_Pfn); return *this; }
 };
 
 typedef basic_binarybuf< char > binarybuf;
