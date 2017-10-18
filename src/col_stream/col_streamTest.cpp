@@ -5,6 +5,8 @@
 #include <fstream>
 #include "bstream.h"
 
+int __col_stream_index__ = std::ios_base::xalloc();
+
 int main(int argc, char* argv[])
 {
 	bool b = false;

@@ -3,7 +3,8 @@
 
 #include "col_xstream.h"
 
-int __col_stream_index__ = std::ios_base::xalloc();
+extern int __col_stream_index__;
+//int __col_stream_index__ = std::ios_base::xalloc();
 
 enum __col_Stream_Flag
 {
