@@ -136,8 +136,8 @@ int main(int argc, char* argv[])
 	test(strBaseUNICODE);
 	std::cout << "==================================" << "\n\n";
 
-	string strANSI("ANSI [string]");
-	wstring strUNICODE(L"UNICODE [string]");
+	string strANSI("ANSI [string][strng][string][strng]");
+	wstring strUNICODE(L"UNICODE [string][strng][string][strng]");
 
 	std::cout << "==== Replace from ANSI string ====" << std::endl;
 	testReplaceString(strANSI);

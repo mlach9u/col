@@ -112,8 +112,8 @@ public:
 public:
 	_ThisX& replace(const _ElemX* lpszFrom, const _ElemX* lpszTo)
 	{
-		size_type _Off = find(lpszFrom);
-		if (_Off != npos)
+		size_type _Off;
+		while ((_Off = find(lpszFrom)) != npos)
 			_Base::replace(_Off, _Traits::length(lpszFrom), lpszTo);
 		return *this;
 	}
