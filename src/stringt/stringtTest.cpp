@@ -99,6 +99,24 @@ void test(const basic_string< _Elem >& str)
 	testFormat(str);
 }
 
+template< typename _Elem >
+void testReplaceString(basic_string< _Elem >& str)
+{
+	std::cout << "From : " << string(str) << std::endl;
+
+	str.replace("string", "ANSI to ANSI");
+	std::cout << "ANSI to ANSI : " << string(str) << std::endl;
+
+	str.replace("ANSI to ANSI", L"ANSI to UNICODE");
+	std::cout << "ANSI to UNICODE : " << string(str) << std::endl;
+
+	str.replace(L"ANSI to UNICODE", "UNICODE to ANSI");
+	std::cout << "UNICODE to ANSI : " << string(str) << std::endl;
+
+	str.replace(L"UNICODE to ANSI", L"UNICODE to UNICODE");
+	std::cout << "UNICODE to UNICODE : " << string(str) << std::endl;
+}
+
 int main(int argc, char* argv[])
 {
 	//setlocale(LC_ALL, "ko-KR");		// You should set locale information.
@@ -116,6 +134,17 @@ int main(int argc, char* argv[])
 
 	std::cout << "==== Test from UNCIDOE string ====" << std::endl;
 	test(strBaseUNICODE);
+	std::cout << "==================================" << "\n\n";
+
+	string strANSI("ANSI [string]");
+	wstring strUNICODE(L"UNICODE [string]");
+
+	std::cout << "==== Replace from ANSI string ====" << std::endl;
+	testReplaceString(strANSI);
+	std::cout << "===============================" << "\n\n";
+
+	std::cout << "==== Replace from UNCIDOE string ====" << std::endl;
+	testReplaceString(strUNICODE);
 	std::cout << "==================================" << "\n\n";
 
 	//basic_string< int > strInt;

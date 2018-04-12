@@ -110,6 +110,30 @@ public:
 	}
 
 public:
+	_ThisX& replace(const _ElemX* lpszFrom, const _ElemX* lpszTo)
+	{
+		size_type _Off = find(lpszFrom);
+		if (_Off != npos)
+			_Base::replace(_Off, _Traits::length(lpszFrom), lpszTo);
+		return *this;
+	}
+
+	_ThisX& replace(const _ElemX* lpszFrom, const _ElemY* lpszTo)
+	{
+		return replace(lpszFrom, _ThisX(lpszTo).c_str());
+	}
+
+	_ThisX& replace(const _ElemY* lpszFrom, const _ElemX* lpszTo)
+	{
+		return replace(_ThisX(lpszFrom).c_str(), lpszTo);
+	}
+
+	_ThisX& replace(const _ElemY* lpszFrom, const _ElemY* lpszTo)
+	{
+		return replace(_ThisX(lpszFrom).c_str(), _ThisX(lpszTo).c_str());
+	}
+
+public:
 	operator const _ElemX*() const					{ return c_str(); }
 
 public:
