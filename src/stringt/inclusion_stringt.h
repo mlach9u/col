@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <string>
 
+#include <algorithm>
+
 #ifdef _MSC_VER
 #if _MSC_VER < 1600							// [..., VS2010)
 

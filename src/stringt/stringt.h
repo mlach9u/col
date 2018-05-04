@@ -5,7 +5,8 @@
 
 template< typename _Elem,
 	typename _Traits = std::char_traits< _Elem >,
-	typename _Ax = std::allocator< _Elem > >
+	typename _Ax = std::allocator< _Elem >
+>
 class basic_string : public std::basic_string< _Elem, _Traits, _Ax >
 {
 public:
@@ -110,7 +111,7 @@ public:
 	}
 
 public:
-	_ThisX& replace(const _ElemX* lpszFrom, const _ElemX* lpszTo)
+	const _ThisX& replace(const _ElemX* lpszFrom, const _ElemX* lpszTo)
 	{
 		size_type _Off;
 		while ((_Off = find(lpszFrom)) != npos)
@@ -118,19 +119,32 @@ public:
 		return *this;
 	}
 
-	_ThisX& replace(const _ElemX* lpszFrom, const _ElemY* lpszTo)
+	const _ThisX& replace(const _ElemX* lpszFrom, const _ElemY* lpszTo)
 	{
 		return replace(lpszFrom, _ThisX(lpszTo).c_str());
 	}
 
-	_ThisX& replace(const _ElemY* lpszFrom, const _ElemX* lpszTo)
+	const _ThisX& replace(const _ElemY* lpszFrom, const _ElemX* lpszTo)
 	{
 		return replace(_ThisX(lpszFrom).c_str(), lpszTo);
 	}
 
-	_ThisX& replace(const _ElemY* lpszFrom, const _ElemY* lpszTo)
+	const _ThisX& replace(const _ElemY* lpszFrom, const _ElemY* lpszTo)
 	{
 		return replace(_ThisX(lpszFrom).c_str(), _ThisX(lpszTo).c_str());
+	}
+
+public:
+	const _ThisX& tolower()
+	{
+		std::transform(begin(), end(), begin(), ::tolower);
+		return *this;
+	}
+
+	const _ThisX& toupper()
+	{
+		std::transform(begin(), end(), begin(), ::toupper);
+		return *this;
 	}
 
 public:

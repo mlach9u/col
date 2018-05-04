@@ -117,35 +117,61 @@ void testReplaceString(basic_string< _Elem >& str)
 	std::cout << "UNICODE to UNICODE : " << string(str) << std::endl;
 }
 
+template< typename _Elem >
+void testTolowerandToupper(basic_string< _Elem >& str)
+{
+	std::cout << "From : " << string(str) << std::endl;
+
+	std::cout << "ToLower : " << string(basic_string< _Elem >(str).tolower()) << std::endl;
+	std::cout << "ToUpper : " << string(basic_string< _Elem >(str).toupper()) << std::endl;
+}
+
 int main(int argc, char* argv[])
 {
 	//setlocale(LC_ALL, "ko-KR");		// You should set locale information.
 	setlocale(LC_ALL, "");
 
-	// Sample text - Korean
-	char szString[7] = { (char)0xB9, (char)0xAE, (char)0xC0, (char)0xDA, (char)0xBF, (char)0xAD, (char)0x00 };
+	{
+		// Sample text - Korean
+		char szString[7] = { (char)0xB9, (char)0xAE, (char)0xC0, (char)0xDA, (char)0xBF, (char)0xAD, (char)0x00 };
 
-	string strBaseANSI(szString);
-	wstring strBaseUNICODE(szString);
+		string strBaseANSI(szString);
+		wstring strBaseUNICODE(szString);
 
-	std::cout << "==== Test from ANSI string ====" << std::endl;
-	test(strBaseANSI);
-	std::cout << "===============================" << "\n\n";
+		std::cout << "==== Test from ANSI string ====" << std::endl;
+		test(strBaseANSI);
+		std::cout << "===============================" << "\n\n";
 
-	std::cout << "==== Test from UNCIDOE string ====" << std::endl;
-	test(strBaseUNICODE);
-	std::cout << "==================================" << "\n\n";
+		std::cout << "==== Test from UNCIDOE string ====" << std::endl;
+		test(strBaseUNICODE);
+		std::cout << "==================================" << "\n\n";
+	}
 
-	string strANSI("ANSI [string][strng][string][strng]");
-	wstring strUNICODE(L"UNICODE [string][strng][string][strng]");
+	{
+		string strANSI("ANSI [string][strng][string][strng]");
+		wstring strUNICODE(L"UNICODE [string][strng][string][strng]");
 
-	std::cout << "==== Replace from ANSI string ====" << std::endl;
-	testReplaceString(strANSI);
-	std::cout << "===============================" << "\n\n";
+		std::cout << "==== Replace from ANSI string ====" << std::endl;
+		testReplaceString(strANSI);
+		std::cout << "==================================" << "\n\n";
 
-	std::cout << "==== Replace from UNCIDOE string ====" << std::endl;
-	testReplaceString(strUNICODE);
-	std::cout << "==================================" << "\n\n";
+		std::cout << "==== Replace from UNCIDOE string ====" << std::endl;
+		testReplaceString(strUNICODE);
+		std::cout << "=====================================" << "\n\n";
+	}
+
+	{
+		string strANSI("ANSI TeST StriNg");
+		string strUNICODE("UNICODE TeST StriNg");
+
+		std::cout << "==== to lower and to upper from ANSI string ====" << std::endl;
+		testTolowerandToupper(strANSI);
+		std::cout << "================================================" << "\n\n";
+
+		std::cout << "==== to lower and to upper from UNICODE string ====" << std::endl;
+		testTolowerandToupper(strUNICODE);
+		std::cout << "===================================================" << "\n\n";
+	}
 
 	//basic_string< int > strInt;
 
