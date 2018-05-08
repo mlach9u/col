@@ -1,7 +1,8 @@
 
-## [Collection of Libraries base](https://github.com/mlach9u/col/tree/master/src/col_base)
+## Collection of Libraries base
 
 ---
+<https://github.com/mlach9u/col/tree/master/src/col_base>
 
 ### 목적
 
@@ -13,7 +14,7 @@
 
 ### C++ Features
 
-Visual Studio 버전이 5개로 구분되어 있으며, 현재 COL 프로젝트에서 사용되는 문법의 사용 가능 여부가 정의되어 있습니다. 각 문법의 사용 가능 여부는 [MSDN](https://msdn.microsoft.com/en-us/library/hh567368.aspx)을 참고하여 구성하였습니다.
+Visual Studio 버전이 5개로 구분되어 있으며, 현재 COL 프로젝트에서 사용되는 문법의 사용 가능 여부가 정의되어 있습니다. 각 문법의 사용 가능 여부는 <https://msdn.microsoft.com/en-us/library/hh567368.aspx>을 참고하여 구성하였습니다.
 
 Visual Studio 2010 이전 버전에서는 `static_assert`문법을 사용할 수 없지만 이 프로젝트를 포함하면 그와 유사하게 동작하는 코드를 작성할 수 있습니다. 이 코드는 아래와 같이 구현됩니다.
 
