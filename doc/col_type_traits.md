@@ -1,5 +1,5 @@
 
-## Type traits(`src/col_type_traits`)
+## [Type traits](https://github.com/mlach9u/col/tree/master/src/col_type_traits)
 
 ---
 
