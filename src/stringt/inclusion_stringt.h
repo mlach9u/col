@@ -9,7 +9,6 @@
 #include <algorithm>
 
 #ifdef _MSC_VER
-#if _MSC_VER < 1600							// [..., VS2010)
 
 #ifndef __STRINGT_INCLUSION_CODECVT__
 #define __STRINGT_INCLUSION_CODECVT__	0
@@ -19,19 +18,7 @@
 #define __STRINGT_INCLUSION_WINDOWS_H__ 1
 #endif
 
-#else										// [VS2010, ...)
-
-#ifndef __STRINGT_INCLUSION_CODECVT__
-#define __STRINGT_INCLUSION_CODECVT__	1
-#endif
-
-#ifndef __STRINGT_INCLUSION_WINDOWS_H__
-#define __STRINGT_INCLUSION_WINDOWS_H__ 0
-#endif
-
-#endif
-
-#else										// !Visual Studio
+#else
 
 #ifndef __STRINGT_INCLUSION_CODECVT__
 #define __STRINGT_INCLUSION_CODECVT__	1

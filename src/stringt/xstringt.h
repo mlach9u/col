@@ -4,6 +4,24 @@
 #include "inclusion_stringt.h"
 #include "..\\col_type_traits\\col_type_traits.h"
 
+size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax)
+{
+#ifdef _WINDOWS_
+    return MultiByteToWideChar(CP_ACP, 0, lpszSrc, strlen(lpszSrc), lpDst, cchDstMax);
+#else
+    return mbstowcs(lpDst, lpszSrc, cchDstMax);
+#endif
+}
+
+size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax)
+{
+#ifdef _WINDOWS_
+    return WideCharToMultiByte(CP_ACP, 0, lpszSrc, wcslen(lpszSrc), lpDst, cchDstMax, NULL, NULL);
+#else
+    return wcstombs(lpDst, lpszSrc, cchDstMax);
+#endif
+}
+
 template< typename _Elem = char >
 struct CharType_Function
 {
@@ -20,12 +38,12 @@ struct CharType_Function
 
 	static size_t xtoy(_ElemY* lpszDst, const _ElemX* lpszSrc, size_t cchDstMax)
 	{
-		return mbstowcs(lpszDst, lpszSrc, cchDstMax);
+		return col_mbstowcs(lpszDst, lpszSrc, cchDstMax);
 	}
 
 	static size_t ytox(_ElemX* lpszDst, const _ElemY* lpszSrc, size_t cchDstMax)
 	{
-		return wcstombs(lpszDst, lpszSrc, cchDstMax);
+		return col_wcstombs(lpszDst, lpszSrc, cchDstMax);
 	}
 };
 
@@ -42,12 +60,12 @@ struct CharType_Function< wchar_t >
 
 	static size_t xtoy(_ElemY* lpszDst, const _ElemX* lpszSrc, size_t cchDstMax)
 	{
-		return wcstombs(lpszDst, lpszSrc, cchDstMax);
+		return col_wcstombs(lpszDst, lpszSrc, cchDstMax);
 	}
 
 	static size_t ytox(_ElemX* lpszDst, const _ElemY* lpszSrc, size_t cchDstMax)
 	{
-		return mbstowcs(lpszDst, lpszSrc, cchDstMax);
+		return col_mbstowcs(lpszDst, lpszSrc, cchDstMax);
 	}
 };
 
