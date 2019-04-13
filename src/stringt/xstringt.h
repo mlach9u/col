@@ -7,7 +7,8 @@
 size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax)
 {
 #ifdef _WINDOWS_
-    return MultiByteToWideChar(CP_ACP, 0, lpszSrc, strlen(lpszSrc), lpDst, cchDstMax);
+    size_t nRet = MultiByteToWideChar(CP_ACP, 0, lpszSrc, strlen(lpszSrc), lpDst, cchDstMax);
+    return ((nRet == 0) ? (size_t )-1 : nRet);
 #else
     return mbstowcs(lpDst, lpszSrc, cchDstMax);
 #endif
@@ -16,7 +17,8 @@ size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax)
 size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax)
 {
 #ifdef _WINDOWS_
-    return WideCharToMultiByte(CP_ACP, 0, lpszSrc, wcslen(lpszSrc), lpDst, cchDstMax, NULL, NULL);
+    size_t nRet = WideCharToMultiByte(CP_ACP, 0, lpszSrc, wcslen(lpszSrc), lpDst, cchDstMax, NULL, NULL);
+    return ((nRet == 0) ? (size_t )-1 : nRet);
 #else
     return wcstombs(lpDst, lpszSrc, cchDstMax);
 #endif
