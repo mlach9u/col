@@ -73,22 +73,22 @@ public:
     }
 
 public:
-    _StrY toY() const
+    _StrY toY(UINT nCodePage = cpnDefault) const
     {
         _StrY strRet;
-        _Implement::xtoy(strRet, *this);
+        _Implement::xtoy(strRet, *this, nCodePage);
         return strRet;
     }
 
-    const _StrX& fromY(const _ElemY* lpszSrc)
+    const _StrX& fromY(const _ElemY* lpszSrc, UINT nCodePage = cpnDefault)
     {
-        _Implement::ytox(*this, lpszSrc);
+        _Implement::ytox(*this, lpszSrc, nCodePage);
         return *this;
     }
 
-    const _StrX& fromY(const _StrY& strSrc)
+    const _StrX& fromY(const _StrY& strSrc, UINT nCodePage = cpnDefault)
     {
-        return fromY(strSrc.c_str());
+        return fromY(strSrc.c_str(), nCodePage);
     }
 
 public:

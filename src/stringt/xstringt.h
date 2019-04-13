@@ -4,19 +4,30 @@
 #include "inclusion_stringt.h"
 #include "..\\col_type_traits\\col_type_traits.h"
 
-size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax)
+enum CodePageNumber
 {
 #ifdef _WINDOWS_
-    return MultiByteToWideChar(CP_ACP, 0, lpszSrc, strlen(lpszSrc), lpDst, cchDstMax);
+    cpnDefault = CP_ACP,    // Default code page
+#else
+    cpnDefault = 0,         // Default code page
+#endif
+
+    cpnLast = 0
+};
+
+size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT nCodePage)
+{
+#ifdef _WINDOWS_
+    return MultiByteToWideChar(nCodePage, 0, lpszSrc, strlen(lpszSrc), lpDst, cchDstMax);
 #else
     return mbstowcs(lpDst, lpszSrc, cchDstMax);
 #endif
 }
 
-size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax)
+size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax, UINT nCodePage)
 {
 #ifdef _WINDOWS_
-    return WideCharToMultiByte(CP_ACP, 0, lpszSrc, wcslen(lpszSrc), lpDst, cchDstMax, NULL, NULL);
+    return WideCharToMultiByte(nCodePage, 0, lpszSrc, wcslen(lpszSrc), lpDst, cchDstMax, NULL, NULL);
 #else
     return wcstombs(lpDst, lpszSrc, cchDstMax);
 #endif
@@ -36,14 +47,14 @@ struct CharType_Function
         return nRet;
     }
 
-    static size_t xtoy(_ElemY* lpszDst, const _ElemX* lpszSrc, size_t cchDstMax)
+    static size_t xtoy(_ElemY* lpszDst, const _ElemX* lpszSrc, size_t cchDstMax, UINT nCodePage)
     {
-        return col_mbstowcs(lpszDst, lpszSrc, cchDstMax);
+        return col_mbstowcs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
 
-    static size_t ytox(_ElemX* lpszDst, const _ElemY* lpszSrc, size_t cchDstMax)
+    static size_t ytox(_ElemX* lpszDst, const _ElemY* lpszSrc, size_t cchDstMax, UINT nCodePage)
     {
-        return col_wcstombs(lpszDst, lpszSrc, cchDstMax);
+        return col_wcstombs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
 };
 
@@ -58,14 +69,14 @@ struct CharType_Function< wchar_t >
         return vswprintf(lpszDst, cchMax, lpszFormat, args);
     }
 
-    static size_t xtoy(_ElemY* lpszDst, const _ElemX* lpszSrc, size_t cchDstMax)
+    static size_t xtoy(_ElemY* lpszDst, const _ElemX* lpszSrc, size_t cchDstMax, UINT nCodePage)
     {
-        return col_wcstombs(lpszDst, lpszSrc, cchDstMax);
+        return col_wcstombs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
 
-    static size_t ytox(_ElemX* lpszDst, const _ElemY* lpszSrc, size_t cchDstMax)
+    static size_t ytox(_ElemX* lpszDst, const _ElemY* lpszSrc, size_t cchDstMax, UINT nCodePage)
     {
-        return col_mbstowcs(lpszDst, lpszSrc, cchDstMax);
+        return col_mbstowcs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
 };
 
@@ -99,13 +110,13 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
         delete[] pszBuffer;
     }
 
-    static void xtoy(_StrY& strDst, const _ElemX* lpszSrc)
+    static void xtoy(_StrY& strDst, const _ElemX* lpszSrc, UINT nCodePage)
     {
-        size_t cch = _Base::xtoy(NULL, lpszSrc, 0);
+        size_t cch = _Base::xtoy(NULL, lpszSrc, 0, nCodePage);
         if (cch != (size_t)-1)
         {
             _ElemY* psz = new _ElemY[cch + 1];
-            if (_Base::xtoy(psz, lpszSrc, cch + 1) == cch)
+            if (_Base::xtoy(psz, lpszSrc, cch + 1, nCodePage) == cch)
             {
                 psz[cch] = 0;
                 strDst = psz;
@@ -114,18 +125,18 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
         }
     }
 
-    static void xtoy(_StrY& strDst, const _StrX& strSrc)
+    static void xtoy(_StrY& strDst, const _StrX& strSrc, UINT nCodePage)
     {
-        xtoy(strDst, strSrc.c_str());
+        xtoy(strDst, strSrc.c_str(), nCodePage);
     }
 
-    static void ytox(_StrX& strDst, const _ElemY* lpszSrc)
+    static void ytox(_StrX& strDst, const _ElemY* lpszSrc, UINT nCodePage)
     {
-        size_t cch = _Base::ytox(NULL, lpszSrc, 0);
+        size_t cch = _Base::ytox(NULL, lpszSrc, 0, nCodePage);
         if (cch != (size_t)-1)
         {
             _ElemX* psz = new _ElemX[cch + 1];
-            if (_Base::ytox(psz, lpszSrc, cch + 1) == cch)
+            if (_Base::ytox(psz, lpszSrc, cch + 1, nCodePage) == cch)
             {
                 psz[cch] = 0;
                 strDst = psz;
@@ -134,9 +145,9 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
         }
     }
 
-    static void ytox(_StrX& strDst, const _StrY& strSrc)
+    static void ytox(_StrX& strDst, const _StrY& strSrc, UINT nCodePage)
     {
-        ytox(strDst, strSrc.c_str());
+        ytox(strDst, strSrc.c_str(), nCodePage);
     }
 };
 
@@ -238,7 +249,7 @@ struct CharType_Implement : public CharType_Implement_Base< char >
         _StrY strY;
 
         utf8converter c;
-        _Base::xtoy(strY, lpszSrc);
+        _Base::xtoy(strY, lpszSrc, cpnDefault);
         strDst = c.to_bytes(strY);
     }
 
@@ -253,7 +264,7 @@ struct CharType_Implement : public CharType_Implement_Base< char >
 
         utf8converter c;
         strY = c.from_bytes(lpszSrc);
-        _Base::ytox(strDst, strY);
+        _Base::ytox(strDst, strY, cpnDefault);
     }
 
     static void utf8tox(_StrX& strDst, const std::string& strSrc)
