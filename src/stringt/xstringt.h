@@ -4,12 +4,17 @@
 #include "inclusion_stringt.h"
 #include "..\\col_type_traits\\col_type_traits.h"
 
+#ifdef _WINDOWS_
+#define __AVOID_STL4017__   // https://devblogs.microsoft.com/cppblog/c17-feature-removals-and-deprecations/
+#endif
+
 enum CodePageNumber
 {
-#ifdef _WINDOWS_
-    cpnDefault = CP_ACP,    // Default code page
+#ifdef __AVOID_STL4017__
+    cpnDefault  = CP_ACP,   // Default code page(CP_ACP)
+    cpnUTF8     = CP_UTF8,  // UTF-8 translation(CP_UTF8)
 #else
-    cpnDefault = 0,         // Default code page
+    cpnDefault = 0,         // For compatibility
 #endif
 
     cpnLast = 0
@@ -17,7 +22,7 @@ enum CodePageNumber
 
 size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT nCodePage)
 {
-#ifdef _WINDOWS_
+#ifdef __AVOID_STL4017__
     size_t nRet = MultiByteToWideChar(nCodePage, 0, lpszSrc, strlen(lpszSrc), lpDst, cchDstMax);
     return ((nRet == 0) ? (size_t )-1 : nRet);
 #else
@@ -27,7 +32,7 @@ size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT 
 
 size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax, UINT nCodePage)
 {
-#ifdef _WINDOWS_
+#ifdef __AVOID_STL4017__
     size_t nRet = WideCharToMultiByte(nCodePage, 0, lpszSrc, wcslen(lpszSrc), lpDst, cchDstMax, NULL, NULL);
     return ((nRet == 0) ? (size_t )-1 : nRet);
 #else
@@ -154,86 +159,18 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
 };
 
 #ifndef __STRINGT_UTF8CONVERTER__
+#ifndef __AVOID_STL4017__
 #ifdef _CODECVT_
 #define __STRINGT_UTF8CONVERTER__
 typedef std::wstring_convert< std::codecvt_utf8< wchar_t > > utf8converter;
 #endif
 #endif
-
-#ifndef __STRINGT_UTF8CONVERTER__
-#ifdef _WINDOWS_
-#define __STRINGT_UTF8CONVERTER__
-struct utf8converter
-{
-    std::string to_bytes(const wchar_t* lpsz)
-    {
-        return to_bytes(lpsz, wcslen(lpsz));
-    }
-
-    std::string to_bytes(const std::wstring& str)
-    {
-        return to_bytes(str.c_str(), str.size());
-    }
-
-    std::string to_bytes(const wchar_t* lpszFirst, const wchar_t* lpszLast)
-    {
-        return to_bytes(lpszFirst, (lpszLast - lpszFirst) / sizeof(wchar_t));
-    }
-
-    std::string to_bytes(const wchar_t* lpszFirst, size_t cch)
-    {
-        std::string strRet;
-        int cchUtf8 = WideCharToMultiByte(CP_UTF8, 0, lpszFirst, cch, NULL, 0, NULL, NULL);
-        if (cchUtf8 != 0)
-        {
-            char* pszUtf8 = new char[cchUtf8 + 1];
-            if (WideCharToMultiByte(CP_UTF8, 0, lpszFirst, cch, pszUtf8, cchUtf8, NULL, NULL) == cchUtf8)
-            {
-                pszUtf8[cchUtf8] = 0;
-                strRet = pszUtf8;
-            }
-            delete[] pszUtf8;
-        }
-        return strRet;
-    }
-
-    std::wstring from_bytes(const char* lpsz)
-    {
-        return from_bytes(lpsz, strlen(lpsz));
-    }
-
-    std::wstring from_bytes(const std::string& str)
-    {
-        return from_bytes(str.c_str(), str.size());
-    }
-
-    std::wstring from_bytes(const char* lpszFirst, const char* lpszLast)
-    {
-        return from_bytes(lpszFirst, (lpszLast - lpszFirst) / sizeof(char));
-    }
-
-    std::wstring from_bytes(const char* lpszFirst, size_t cch)
-    {
-        std::wstring strRet;
-        int cchWideChar = MultiByteToWideChar(CP_UTF8, 0, lpszFirst, cch, NULL, 0);
-        if (cchWideChar != 0)
-        {
-            wchar_t* pszWideChar = new wchar_t[cchWideChar + 1];
-            if (MultiByteToWideChar(CP_UTF8, 0, lpszFirst, cch, pszWideChar, cchWideChar) == cchWideChar)
-            {
-                pszWideChar[cchWideChar] = 0;
-                strRet = pszWideChar;
-            }
-            delete[] pszWideChar;
-        }
-        return strRet;
-    }
-};
-#endif
 #endif
 
+#ifndef __AVOID_STL4017__
 #ifndef __STRINGT_UTF8CONVERTER__
 #error "UTF-8 converter is not defined."
+#endif
 #endif
 
 template< typename _Elem = char >
@@ -250,9 +187,13 @@ struct CharType_Implement : public CharType_Implement_Base< char >
     {
         _StrY strY;
 
-        utf8converter c;
         _Base::xtoy(strY, lpszSrc, cpnDefault);
+#ifdef __AVOID_STL4017__
+        _Base::ytox(strDst, strY, cpnUTF8);
+#else
+        utf8converter c;
         strDst = c.to_bytes(strY);
+#endif
     }
 
     static void xtoutf8(std::string& strDst, const _StrX& strSrc)
@@ -264,8 +205,12 @@ struct CharType_Implement : public CharType_Implement_Base< char >
     {
         _StrY strY;
 
+#ifdef __AVOID_STL4017__
+        _Base::xtoy(strY, lpszSrc, cpnUTF8);
+#else
         utf8converter c;
         strY = c.from_bytes(lpszSrc);
+#endif
         _Base::ytox(strDst, strY, cpnDefault);
     }
 
@@ -287,8 +232,12 @@ struct CharType_Implement< wchar_t > : public CharType_Implement_Base< wchar_t >
 
     static void xtoutf8(std::string& strDst, const _ElemX* lpszSrc)
     {
+#ifdef __AVOID_STL4017__
+        _Base::xtoy(strDst, lpszSrc, cpnUTF8);
+#else
         utf8converter c;
         strDst = c.to_bytes(lpszSrc);
+#endif
     }
 
     static void xtoutf8(std::string& strDst, const _StrX& strSrc)
@@ -298,8 +247,12 @@ struct CharType_Implement< wchar_t > : public CharType_Implement_Base< wchar_t >
 
     static void utf8tox(_StrX& strDst, const char* lpszSrc)
     {
+#ifdef __AVOID_STL4017__
+        _Base::ytox(strDst, lpszSrc, cpnUTF8);
+#else
         utf8converter c;
         strDst = c.from_bytes(lpszSrc);
+#endif
     }
 
     static void utf8tox(_StrX& strDst, const std::string& strSrc)
