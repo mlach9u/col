@@ -18,7 +18,8 @@ enum CodePageNumber
 size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT nCodePage)
 {
 #ifdef _WINDOWS_
-    return MultiByteToWideChar(nCodePage, 0, lpszSrc, strlen(lpszSrc), lpDst, cchDstMax);
+    size_t nRet = MultiByteToWideChar(nCodePage, 0, lpszSrc, strlen(lpszSrc), lpDst, cchDstMax);
+    return ((nRet == 0) ? (size_t )-1 : nRet);
 #else
     return mbstowcs(lpDst, lpszSrc, cchDstMax);
 #endif
@@ -27,7 +28,8 @@ size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT 
 size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax, UINT nCodePage)
 {
 #ifdef _WINDOWS_
-    return WideCharToMultiByte(nCodePage, 0, lpszSrc, wcslen(lpszSrc), lpDst, cchDstMax, NULL, NULL);
+    size_t nRet = WideCharToMultiByte(nCodePage, 0, lpszSrc, wcslen(lpszSrc), lpDst, cchDstMax, NULL, NULL);
+    return ((nRet == 0) ? (size_t )-1 : nRet);
 #else
     return wcstombs(lpDst, lpszSrc, cchDstMax);
 #endif
