@@ -8,13 +8,26 @@
 #define __AVOID_STL4017__   // https://devblogs.microsoft.com/cppblog/c17-feature-removals-and-deprecations/
 #endif
 
+#ifdef __AVOID_STL4017__
+enum CodePageFlag
+{
+    cpfAutoDetect       = 0x80000000,     // Auto detect UTF-8 or MBCS
+
+    cpfFlagMask         = 0xFFFF0000,
+    cpfCodePageMask     = 0x0000FFFF,
+
+    cpfLast = 0
+};
+#endif
+
 enum CodePageNumber
 {
 #ifdef __AVOID_STL4017__
-    cpnDefault  = CP_ACP,   // Default code page(CP_ACP)
-    cpnUTF8     = CP_UTF8,  // UTF-8 translation(CP_UTF8)
+    cpnDefault  = (cpfAutoDetect | CP_ACP), // Default code page(CP_ACP) and auto detect whether UTF-8 or not
+    cpnANSI     = CP_ACP,                   // Default code page(CP_ACP)
+    cpnUTF8     = CP_UTF8,                  // UTF-8 translation(CP_UTF8)
 #else
-    cpnDefault = 0,         // For compatibility
+    cpnDefault  = 0,                        // For compatibility
 #endif
 
     cpnLast = 0
@@ -23,7 +36,17 @@ enum CodePageNumber
 size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT nCodePage)
 {
 #ifdef __AVOID_STL4017__
-    size_t nRet = MultiByteToWideChar(nCodePage, 0, lpszSrc, strlen(lpszSrc), lpDst, cchDstMax);
+    size_t nRet = 0;
+    size_t cchSrc = strlen(lpszSrc);
+    if (nCodePage & cpfAutoDetect)
+    {
+        nRet = MultiByteToWideChar(cpnUTF8, MB_ERR_INVALID_CHARS, lpszSrc, cchSrc, lpDst, cchDstMax);
+    }
+
+    if (nRet == 0)
+    {
+        nRet = MultiByteToWideChar(nCodePage & cpfCodePageMask, 0, lpszSrc, cchSrc, lpDst, cchDstMax);
+    }
     return ((nRet == 0) ? (size_t )-1 : nRet);
 #else
     return mbstowcs(lpDst, lpszSrc, cchDstMax);
@@ -33,7 +56,7 @@ size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT 
 size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax, UINT nCodePage)
 {
 #ifdef __AVOID_STL4017__
-    size_t nRet = WideCharToMultiByte(nCodePage, 0, lpszSrc, wcslen(lpszSrc), lpDst, cchDstMax, NULL, NULL);
+    size_t nRet = WideCharToMultiByte(nCodePage & cpfCodePageMask, 0, lpszSrc, wcslen(lpszSrc), lpDst, cchDstMax, NULL, NULL);
     return ((nRet == 0) ? (size_t )-1 : nRet);
 #else
     return wcstombs(lpDst, lpszSrc, cchDstMax);
