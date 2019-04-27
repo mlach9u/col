@@ -84,17 +84,17 @@ struct bool_constant : integral_constant< bool, b > {};
 template< typename _Ty, _Ty _First, _Ty _Second >
 struct integral_pair
 {
-	typedef _Ty value_type;
-	typedef integral_pair< _Ty, _First, _Second > type;
+    typedef _Ty value_type;
+    typedef integral_pair< _Ty, _First, _Second > type;
 
-	typedef integral_constant< _Ty, _First > first_type;
-	typedef integral_constant< _Ty, _Second > second_type;
+    typedef integral_constant< _Ty, _First > first_type;
+    typedef integral_constant< _Ty, _Second > second_type;
 
-	typedef typename first_type::value_type first_value_type;
-	typedef typename second_type::value_type second_value_type;
+    typedef typename first_type::value_type first_value_type;
+    typedef typename second_type::value_type second_value_type;
 
-	static first_value_type first_value() { return first_type::value; }
-	static second_value_type second_value() { return second_type::value; }
+    static first_value_type first_value() { return first_type::value; }
+    static second_value_type second_value() { return second_type::value; }
 };
 
 template< typename _Ty, _Ty _Val1, _Ty _Val2 >

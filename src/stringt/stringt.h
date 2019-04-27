@@ -114,22 +114,22 @@ public:
     const _ThisX& replace(const _ElemX* lpszFrom, const _ElemX* lpszTo)
     {
         size_type _Off;
-        while ((_Off = find(lpszFrom)) != npos)
+        while ((_Off = _Base::find(lpszFrom)) != _Base::npos)
             _Base::replace(_Off, _Traits::length(lpszFrom), lpszTo);
         return *this;
     }
 
-    const _ThisX& replace(const _ElemX* lpszFrom, const _ElemY* lpszTo)
+    const _ThisX & replace(const _ElemX * lpszFrom, const _ElemY * lpszTo)
     {
         return replace(lpszFrom, _ThisX(lpszTo).c_str());
     }
 
-    const _ThisX& replace(const _ElemY* lpszFrom, const _ElemX* lpszTo)
+    const _ThisX& replace(const _ElemY * lpszFrom, const _ElemX * lpszTo)
     {
         return replace(_ThisX(lpszFrom).c_str(), lpszTo);
     }
 
-    const _ThisX& replace(const _ElemY* lpszFrom, const _ElemY* lpszTo)
+    const _ThisX& replace(const _ElemY * lpszFrom, const _ElemY * lpszTo)
     {
         return replace(_ThisX(lpszFrom).c_str(), _ThisX(lpszTo).c_str());
     }
@@ -137,34 +137,34 @@ public:
 public:
     const _ThisX& tolower()
     {
-        std::transform(begin(), end(), begin(), ::tolower);
+        std::transform(_Base::begin(), _Base::end(), _Base::begin(), ::tolower);
         return *this;
     }
 
     const _ThisX& toupper()
     {
-        std::transform(begin(), end(), begin(), ::toupper);
+        std::transform(_Base::begin(), _Base::end(), _Base::begin(), ::toupper);
         return *this;
     }
 
 public:
-    operator const _ElemX*() const { return c_str(); }
+    operator const _ElemX* () const { return _Base::c_str(); }
 
 public:
-    const _Base& operator = (const _ElemX* lpsz) { assign(lpsz); return *this; }
-    const _Base& operator = (const _StrX& str) { assign(str); return *this; }
-    const _Base& operator = (const _ThisX& str) { assign(str); return *this; }
+    const _Base& operator = (const _ElemX* lpsz) { _Base::assign(lpsz); return *this; }
+    const _Base& operator = (const _StrX& str) { _Base::assign(str); return *this; }
+    const _Base& operator = (const _ThisX& str) { _Base::assign(str); return *this; }
     const _Base& operator = (const _ElemY* lpsz) { return fromY(lpsz); }
     const _Base& operator = (const _StrY& str) { return fromY(str); }
     const _Base& operator = (const _ThisY& str) { return fromY(str); }
 
 public:
-    const _Base& operator += (const _ElemX* lpsz) { append(lpsz); return *this; }
-    const _Base& operator += (const _StrX& str) { append(str); return *this; }
-    const _Base& operator += (const _ThisX& str) { append(str); return *this; }
-    const _Base& operator += (const _ElemY* lpsz) { append(_ThisX(lpsz)); return *this; }
-    const _Base& operator += (const _StrY& str) { append(_ThisX(str)); return *this; }
-    const _Base& operator += (const _ThisY& str) { append(_ThisX(str)); return *this; }
+    const _Base& operator += (const _ElemX* lpsz) { _Base::append(lpsz); return *this; }
+    const _Base& operator += (const _StrX& str) { _Base::append(str); return *this; }
+    const _Base& operator += (const _ThisX& str) { _Base::append(str); return *this; }
+    const _Base& operator += (const _ElemY* lpsz) { _Base::append(_ThisX(lpsz)); return *this; }
+    const _Base& operator += (const _StrY& str) { _Base::append(_ThisX(str)); return *this; }
+    const _Base& operator += (const _ThisY& str) { _Base::append(_ThisX(str)); return *this; }
 };
 
 typedef basic_string< char > string;
