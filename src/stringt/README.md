@@ -30,6 +30,8 @@ basic_string< ... >::_ThisY // is basic_string< _ElemY >
 
 Some functions in `basic_string` template class are influenced by locale information. If you want detail information, visit [setlocale](http://www.cplusplus.com/reference/clocale/setlocale/).
 
+* If you use Visual Studio, you do not have to worry about it.
+
 ### Usage
 
 #### Convert between ASCII and UNICODE
@@ -92,4 +94,4 @@ strSecond.fromutf8(strUtf8);
 
 ##### Limitation
 
-`basic_string` template class can't determine whether string is ASCII or UTF-8.
+~~`basic_string` template class can't determine whether string is ASCII or UTF-8.~~

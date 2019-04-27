@@ -25,10 +25,12 @@ void testConstructor(const basic_string< _Elem > & str)
     std::cout << "== Constructor test" << std::endl;
 
     typename basic_string< _Elem >::_ThisX strX(str.c_str());
-    std::cout << "   To _ElemX :         ";		showhex(strX);
+    std::cout << "   To _ElemX :                        ";
+    showhex(strX);
 
     typename basic_string< _Elem >::_ThisY strY(str.c_str());
-    std::cout << "   To _ElemY :         ";		showhex(strY);
+    std::cout << "   To _ElemY :                        ";
+    showhex(strY);
 }
 
 template< typename _Elem >
@@ -38,22 +40,26 @@ void testAssignment(const basic_string< _Elem > & str)
 
     typename basic_string< _Elem >::_ThisX strX;
     strX = str;
-    std::cout << "   To _ElemX :         ";		showhex(strX);
+    std::cout << "   To _ElemX :                        ";
+    showhex(strX);
 
     typename basic_string< _Elem >::_ThisY strY;
     strY = str;
-    std::cout << "   To _ElemY :         ";		showhex(strY);
+    std::cout << "   To _ElemY :                        ";
+    showhex(strY);
 }
 
 template< typename _Elem >
 void testExplicit(const basic_string< _Elem > & str)
 {
-    std::cout << "== Explicit test (these are only _ElemY string.)" << std::endl;
+    std::cout << "== Explicit test" << std::endl;
 
-    std::cout << "   ToY :               ";		showhex(str.toY());
+    std::cout << "   ToY :                              ";
+    showhex(str.toY());
 
     typename basic_string< _Elem >::_ThisY strY;
-    std::cout << "   FromY :             ";		showhex(strY.fromY(str.c_str()));
+    std::cout << "   FromY :                            ";
+    showhex(strY.fromY(str.c_str()));
 }
 
 template< typename _Elem >
@@ -62,13 +68,20 @@ void testUtf8(const basic_string< _Elem > & str)
     std::cout << "== UTF-8 test" << std::endl;
 
     std::string strUtf8 = str.toutf8();
-    std::cout << "   To UTF-8 :          ";		showhex(strUtf8);
+    std::cout << "   To UTF-8 :                         ";
+    showhex(strUtf8);
 
     typename basic_string< _Elem >::_ThisX strX;
-    std::cout << "   _ElemX from UTF-8 : ";		showhex(strX.fromutf8(strUtf8));
+    std::cout << "   _ElemX from UTF-8 (fromutf8 call): ";
+    showhex(strX.fromutf8(strUtf8));
+    std::cout << "   _ElemX from UTF-8 (assign   call): ";
+    showhex(strX = strUtf8);
 
     typename basic_string< _Elem >::_ThisY strY;
-    std::cout << "   _ElemY from UTF-8 : ";		showhex(strY.fromutf8(strUtf8));
+    std::cout << "   _ElemY from UTF-8 (Explicit call): ";
+    showhex(strY.fromutf8(strUtf8));
+    std::cout << "   _ElemY from UTF-8 (assign   call): ";
+    showhex(strY = strUtf8);
 }
 
 template< typename _Elem >
@@ -80,11 +93,13 @@ void testFormat(const basic_string< _Elem > & str)
 
     typename basic_string< _Elem >::_ThisX strX;
     strX.format(strFormat.c_str(), str.c_str());
-    std::cout << "    _ElemX format :    ";		showhex(strX);
+    std::cout << "   _ElemX format :                    ";
+    showhex(strX);
 
     typename basic_string< _Elem >::_ThisY strY;
     strY.format(strFormat.c_str(), str.c_str());
-    std::cout << "    _ElemY format :    ";		showhex(strY);
+    std::cout << "   _ElemY format :                    ";
+    showhex(strY);
 }
 
 template< typename _Elem >
@@ -128,28 +143,34 @@ void testTolowerandToupper(basic_string< _Elem > & str)
 
 int main(int argc, char* argv[])
 {
+#ifndef __AVOID_STL4017__
     //setlocale(LC_ALL, "ko-KR");		// You should set locale information.
     setlocale(LC_ALL, "");
+#endif
 
     {
         // Sample text - Korean
         char szString[7] = { (char)0xB9, (char)0xAE, (char)0xC0, (char)0xDA, (char)0xBF, (char)0xAD, (char)0x00 };
 
         string strBaseANSI(szString);
-        wstring strBaseUNICODE(szString);
-
         std::cout << "==== Test from ANSI string ====" << std::endl;
         test(strBaseANSI);
         std::cout << "===============================" << "\n\n";
 
+        wstring strBaseUNICODE(szString);
         std::cout << "==== Test from UNCIDOE string ====" << std::endl;
         test(strBaseUNICODE);
+        std::cout << "==================================" << "\n\n";
+
+        string strBasUtf8(strBaseUNICODE.toutf8());
+        std::cout << "==== Test from UTF-8 string ====" << std::endl;
+        test(strBasUtf8);
         std::cout << "==================================" << "\n\n";
     }
 
     {
-        string strANSI("ANSI [string][strng][string][strng]");
-        wstring strUNICODE(L"UNICODE [string][strng][string][strng]");
+        string strANSI("ANSI [string]");
+        wstring strUNICODE(L"UNICODE [string]");
 
         std::cout << "==== Replace from ANSI string ====" << std::endl;
         testReplaceString(strANSI);
