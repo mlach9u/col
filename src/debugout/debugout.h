@@ -31,7 +31,7 @@ protected:
 	virtual int sync()
 	{
 		_Function::dprint(str().c_str());
-		_Tidy();
+		this->_Tidy();
 		return _Base::sync();
 	}
 };

@@ -132,6 +132,7 @@ class basic_bostream : public basic_ostream< _Elem, _Traits >
 public:
 	typedef basic_bostream< _Elem, _Traits > _Myt;
 	typedef basic_ostream< _Elem, _Traits > _Base;
+    typedef typename _Base::_Myios _Myios;
 	typedef typename _Base::_Mysb _Mysb;
 
 	explicit basic_bostream(_Mysb* _Strbuf)
@@ -185,6 +186,7 @@ class basic_bistream : public basic_istream< _Elem, _Traits >
 public:
 	typedef basic_bistream< _Elem, _Traits > _Myt;
 	typedef basic_istream< _Elem, _Traits > _Base;
+    typedef typename _Base::_Myios _Myios;
 	typedef typename _Base::_Mysb _Mysb;
 
 	explicit basic_bistream(_Mysb* _Strbuf)

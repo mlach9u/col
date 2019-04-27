@@ -114,7 +114,7 @@ public:
     const _ThisX& replace(const _ElemX* lpszFrom, const _ElemX* lpszTo)
     {
         size_type _Off;
-        while ((_Off = find(lpszFrom)) != npos)
+        while ((_Off = this->find(lpszFrom)) != _Base::npos)
             _Base::replace(_Off, _Traits::length(lpszFrom), lpszTo);
         return *this;
     }
@@ -137,18 +137,18 @@ public:
 public:
     const _ThisX& tolower()
     {
-        std::transform(begin(), end(), begin(), ::tolower);
+        std::transform(this->begin(), this->end(), this->begin(), ::tolower);
         return *this;
     }
 
     const _ThisX& toupper()
     {
-        std::transform(begin(), end(), begin(), ::toupper);
+        std::transform(this->begin(), this->end(), this->begin(), ::toupper);
         return *this;
     }
 
 public:
-    operator const _ElemX*() const { return c_str(); }
+    operator const _ElemX*() const { return this->c_str(); }
 
 public:
     const _Base& operator = (const _ElemX* lpsz) { assign(lpsz); return *this; }

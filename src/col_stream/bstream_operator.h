@@ -41,7 +41,7 @@ basic_bostream< _Elem, _Traits >& operator << (basic_bostream< _Elem, _Traits >&
 	unsigned long ulCount = (unsigned long)(_Tys.size());
 	_Ostr << ulCount;
 
-	std::vector< _Ty >::const_iterator cit;
+	typename std::vector< _Ty >::const_iterator cit;
 	for (cit = _Tys.begin(); cit != _Tys.end(); ++cit)
 		_Ostr << *cit;
 	return _Ostr;
@@ -73,7 +73,7 @@ basic_bostream< _Elem, _Traits >& operator << (basic_bostream< _Elem, _Traits >&
 	unsigned long ulCount = (unsigned long)(_Tys.size());
 	_Ostr << ulCount;
 
-	std::list< _Ty >::const_iterator cit;
+	typename std::list< _Ty >::const_iterator cit;
 	for (cit = _Tys.begin(); cit != _Tys.end(); ++cit)
 		_Ostr << *cit;
 	return _Ostr;
@@ -121,7 +121,7 @@ basic_bostream< _Elem, _Traits >& operator << (basic_bostream< _Elem, _Traits >&
 	unsigned long ulCount = (unsigned long)(_Map.size());
 	_Ostr << ulCount;
 
-	std::map< _Kty, _Ty, _Pr, _Alloc >::const_iterator cit;
+	typename std::map< _Kty, _Ty, _Pr, _Alloc >::const_iterator cit;
 	for (cit = _Map.begin(); cit != _Map.end(); ++cit)
 		_Ostr << *cit;
 	return _Ostr;
