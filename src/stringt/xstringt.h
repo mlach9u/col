@@ -11,8 +11,8 @@
 enum CodePageNumber
 {
 #ifdef __AVOID_STL4017__
-    cpnDefault  = CP_ACP,   // Default code page(CP_ACP)
-    cpnUTF8     = CP_UTF8,  // UTF-8 translation(CP_UTF8)
+    cpnDefault = CP_ACP,   // Default code page(CP_ACP)
+    cpnUTF8 = CP_UTF8,  // UTF-8 translation(CP_UTF8)
 #else
     cpnDefault = 0,         // For compatibility
 #endif
@@ -24,7 +24,7 @@ size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT 
 {
 #ifdef __AVOID_STL4017__
     size_t nRet = MultiByteToWideChar(nCodePage, 0, lpszSrc, strlen(lpszSrc), lpDst, cchDstMax);
-    return ((nRet == 0) ? (size_t )-1 : nRet);
+    return ((nRet == 0) ? (size_t)-1 : nRet);
 #else
     return mbstowcs(lpDst, lpszSrc, cchDstMax);
 #endif
@@ -34,7 +34,7 @@ size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax, UINT 
 {
 #ifdef __AVOID_STL4017__
     size_t nRet = WideCharToMultiByte(nCodePage, 0, lpszSrc, wcslen(lpszSrc), lpDst, cchDstMax, NULL, NULL);
-    return ((nRet == 0) ? (size_t )-1 : nRet);
+    return ((nRet == 0) ? (size_t)-1 : nRet);
 #else
     return wcstombs(lpDst, lpszSrc, cchDstMax);
 #endif
@@ -54,12 +54,12 @@ struct CharType_Function
         return nRet;
     }
 
-    static size_t xtoy(_ElemY* lpszDst, const _ElemX* lpszSrc, size_t cchDstMax, UINT nCodePage)
+    static size_t xtoy(_ElemY * lpszDst, const _ElemX * lpszSrc, size_t cchDstMax, UINT nCodePage)
     {
         return col_mbstowcs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
 
-    static size_t ytox(_ElemX* lpszDst, const _ElemY* lpszSrc, size_t cchDstMax, UINT nCodePage)
+    static size_t ytox(_ElemX * lpszDst, const _ElemY * lpszSrc, size_t cchDstMax, UINT nCodePage)
     {
         return col_wcstombs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
@@ -117,7 +117,7 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
         delete[] pszBuffer;
     }
 
-    static void xtoy(_StrY& strDst, const _ElemX* lpszSrc, UINT nCodePage)
+    static void xtoy(_StrY & strDst, const _ElemX * lpszSrc, UINT nCodePage)
     {
         size_t cch = _Base::xtoy(NULL, lpszSrc, 0, nCodePage);
         if (cch != (size_t)-1)
@@ -132,12 +132,12 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
         }
     }
 
-    static void xtoy(_StrY& strDst, const _StrX& strSrc, UINT nCodePage)
+    static void xtoy(_StrY & strDst, const _StrX & strSrc, UINT nCodePage)
     {
         xtoy(strDst, strSrc.c_str(), nCodePage);
     }
 
-    static void ytox(_StrX& strDst, const _ElemY* lpszSrc, UINT nCodePage)
+    static void ytox(_StrX & strDst, const _ElemY * lpszSrc, UINT nCodePage)
     {
         size_t cch = _Base::ytox(NULL, lpszSrc, 0, nCodePage);
         if (cch != (size_t)-1)
@@ -152,7 +152,7 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
         }
     }
 
-    static void ytox(_StrX& strDst, const _StrY& strSrc, UINT nCodePage)
+    static void ytox(_StrX & strDst, const _StrY & strSrc, UINT nCodePage)
     {
         ytox(strDst, strSrc.c_str(), nCodePage);
     }

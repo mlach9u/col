@@ -14,16 +14,16 @@ static_assert(3 == 3, "This is not error.");
 
 int main(int argc, char* argv[])
 {
-	std::cout << COUNTER_STRING(count_) << std::endl;
-	std::cout << COUNTER_STRING(count_) << std::endl;
-	std::cout << COUNTER_STRING(count_) << std::endl;
-	std::cout << COUNTER_STRING(count_) << std::endl;
-	std::cout << COUNTER_STRING(count_) << std::endl;
-	std::cout << COUNTER_STRING(count_) << std::endl;
-	std::cout << COUNTER_STRING(count_) << std::endl;
-	std::cout << COUNTER_STRING(count_) << std::endl;
-	std::cout << COUNTER_STRING(count_) << std::endl;
-	std::cout << COUNTER_STRING(count_) << std::endl;
-	std::cout << COUNTER_STRING(count_) << std::endl;
-	return 0;
+    std::cout << COUNTER_STRING(count_) << std::endl;
+    std::cout << COUNTER_STRING(count_) << std::endl;
+    std::cout << COUNTER_STRING(count_) << std::endl;
+    std::cout << COUNTER_STRING(count_) << std::endl;
+    std::cout << COUNTER_STRING(count_) << std::endl;
+    std::cout << COUNTER_STRING(count_) << std::endl;
+    std::cout << COUNTER_STRING(count_) << std::endl;
+    std::cout << COUNTER_STRING(count_) << std::endl;
+    std::cout << COUNTER_STRING(count_) << std::endl;
+    std::cout << COUNTER_STRING(count_) << std::endl;
+    std::cout << COUNTER_STRING(count_) << std::endl;
+    return 0;
 }

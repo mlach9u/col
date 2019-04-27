@@ -6,23 +6,23 @@
 template< typename _Elem = char >
 struct OutputDebug_Function
 {
-	typedef char char_type;
+    typedef char char_type;
 
-	static void dprint(const char_type* lpsz)
-	{
-		OutputDebugStringA(lpsz);
-	}
+    static void dprint(const char_type* lpsz)
+    {
+        OutputDebugStringA(lpsz);
+    }
 };
 
 template<>
 struct OutputDebug_Function< wchar_t >
 {
-	typedef wchar_t char_type;
+    typedef wchar_t char_type;
 
-	static void dprint(const char_type* lpsz)
-	{
-		OutputDebugStringW(lpsz);
-	}
+    static void dprint(const char_type* lpsz)
+    {
+        OutputDebugStringW(lpsz);
+    }
 };
 
 #endif

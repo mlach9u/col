@@ -14,13 +14,13 @@ void showhex(const unsigned char* pData, int cb)
 }
 
 template< typename _Elem >
-void showhex(const std::basic_string< _Elem >& str)
+void showhex(const std::basic_string< _Elem > & str)
 {
     showhex((const unsigned char*)str.c_str(), (int)(str.size() * sizeof(_Elem)));
 }
 
 template< typename _Elem >
-void testConstructor(const basic_string< _Elem >& str)
+void testConstructor(const basic_string< _Elem > & str)
 {
     std::cout << "== Constructor test" << std::endl;
 
@@ -32,7 +32,7 @@ void testConstructor(const basic_string< _Elem >& str)
 }
 
 template< typename _Elem >
-void testAssignment(const basic_string< _Elem >& str)
+void testAssignment(const basic_string< _Elem > & str)
 {
     std::cout << "== Assignment test" << std::endl;
 
@@ -46,7 +46,7 @@ void testAssignment(const basic_string< _Elem >& str)
 }
 
 template< typename _Elem >
-void testExplicit(const basic_string< _Elem >& str)
+void testExplicit(const basic_string< _Elem > & str)
 {
     std::cout << "== Explicit test (these are only _ElemY string.)" << std::endl;
 
@@ -57,7 +57,7 @@ void testExplicit(const basic_string< _Elem >& str)
 }
 
 template< typename _Elem >
-void testUtf8(const basic_string< _Elem >& str)
+void testUtf8(const basic_string< _Elem > & str)
 {
     std::cout << "== UTF-8 test" << std::endl;
 
@@ -72,7 +72,7 @@ void testUtf8(const basic_string< _Elem >& str)
 }
 
 template< typename _Elem >
-void testFormat(const basic_string< _Elem >& str)
+void testFormat(const basic_string< _Elem > & str)
 {
     std::cout << "== Format test" << std::endl;
 
@@ -88,7 +88,7 @@ void testFormat(const basic_string< _Elem >& str)
 }
 
 template< typename _Elem >
-void test(const basic_string< _Elem >& str)
+void test(const basic_string< _Elem > & str)
 {
     std::cout << "From : ";		showhex(str);
 
@@ -100,7 +100,7 @@ void test(const basic_string< _Elem >& str)
 }
 
 template< typename _Elem >
-void testReplaceString(basic_string< _Elem >& str)
+void testReplaceString(basic_string< _Elem > & str)
 {
     std::cout << "From : " << string(str) << std::endl;
 
@@ -118,7 +118,7 @@ void testReplaceString(basic_string< _Elem >& str)
 }
 
 template< typename _Elem >
-void testTolowerandToupper(basic_string< _Elem >& str)
+void testTolowerandToupper(basic_string< _Elem > & str)
 {
     std::cout << "From : " << string(str) << std::endl;
 

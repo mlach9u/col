@@ -119,17 +119,17 @@ public:
         return *this;
     }
 
-    const _ThisX& replace(const _ElemX* lpszFrom, const _ElemY* lpszTo)
+    const _ThisX & replace(const _ElemX * lpszFrom, const _ElemY * lpszTo)
     {
         return replace(lpszFrom, _ThisX(lpszTo).c_str());
     }
 
-    const _ThisX& replace(const _ElemY* lpszFrom, const _ElemX* lpszTo)
+    const _ThisX& replace(const _ElemY * lpszFrom, const _ElemX * lpszTo)
     {
         return replace(_ThisX(lpszFrom).c_str(), lpszTo);
     }
 
-    const _ThisX& replace(const _ElemY* lpszFrom, const _ElemY* lpszTo)
+    const _ThisX& replace(const _ElemY * lpszFrom, const _ElemY * lpszTo)
     {
         return replace(_ThisX(lpszFrom).c_str(), _ThisX(lpszTo).c_str());
     }
@@ -148,23 +148,23 @@ public:
     }
 
 public:
-    operator const _ElemX*() const { return c_str(); }
+    operator const _ElemX* () const { return c_str(); }
 
 public:
-    const _Base& operator = (const _ElemX* lpsz) { assign(lpsz); return *this; }
-    const _Base& operator = (const _StrX& str) { assign(str); return *this; }
-    const _Base& operator = (const _ThisX& str) { assign(str); return *this; }
-    const _Base& operator = (const _ElemY* lpsz) { return fromY(lpsz); }
-    const _Base& operator = (const _StrY& str) { return fromY(str); }
-    const _Base& operator = (const _ThisY& str) { return fromY(str); }
+    const _Base& operator = (const _ElemX * lpsz) { assign(lpsz); return *this; }
+    const _Base& operator = (const _StrX & str) { assign(str); return *this; }
+    const _Base& operator = (const _ThisX & str) { assign(str); return *this; }
+    const _Base& operator = (const _ElemY * lpsz) { return fromY(lpsz); }
+    const _Base& operator = (const _StrY & str) { return fromY(str); }
+    const _Base& operator = (const _ThisY & str) { return fromY(str); }
 
 public:
-    const _Base& operator += (const _ElemX* lpsz) { append(lpsz); return *this; }
-    const _Base& operator += (const _StrX& str) { append(str); return *this; }
-    const _Base& operator += (const _ThisX& str) { append(str); return *this; }
-    const _Base& operator += (const _ElemY* lpsz) { append(_ThisX(lpsz)); return *this; }
-    const _Base& operator += (const _StrY& str) { append(_ThisX(str)); return *this; }
-    const _Base& operator += (const _ThisY& str) { append(_ThisX(str)); return *this; }
+    const _Base& operator += (const _ElemX * lpsz) { append(lpsz); return *this; }
+    const _Base& operator += (const _StrX & str) { append(str); return *this; }
+    const _Base& operator += (const _ThisX & str) { append(str); return *this; }
+    const _Base& operator += (const _ElemY * lpsz) { append(_ThisX(lpsz)); return *this; }
+    const _Base& operator += (const _StrY & str) { append(_ThisX(str)); return *this; }
+    const _Base& operator += (const _ThisY & str) { append(_ThisX(str)); return *this; }
 };
 
 typedef basic_string< char > string;
