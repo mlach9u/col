@@ -38,7 +38,7 @@ public:
     _Myt& _Put_arithmetic(_Vty _Val)
     {
         static_assert(is_arithmetic< _Vty >::value, "Integer or floating point required");
-        if ((iword(__col_stream_index__) & __col_sfNput) == 0)
+        if ((_Base::iword(__col_stream_index__) & __col_sfNput) == 0)
         {
             *(_Base*)this << _Val;
             return *this;
@@ -51,7 +51,7 @@ public:
         {
             try
             {
-                const _col_Nput* p = dynamic_cast<const _col_Nput*>(&(std::use_facet< _Nput >(getloc())));
+                const _col_Nput* p = dynamic_cast<const _col_Nput*>(&(std::use_facet< _Nput >(_Base::getloc())));
                 if ((p == 0) || (p->put(_Iter(_Myios::rdbuf()), *this, _Myios::fill(), _Val).failed()))
                     _State |= std::ios_base::badbit;
             }
@@ -131,7 +131,7 @@ public:
     _Myt& _Get_arithmetic(_Vty& _Val)
     {
         static_assert(is_arithmetic< _Vty >::value, "Integer or floating point required");
-        if ((iword(__col_stream_index__) & __col_sfNget) == 0)
+        if ((_Base::iword(__col_stream_index__) & __col_sfNget) == 0)
         {
             *(_Base*)this >> _Val;
             return *this;
@@ -144,7 +144,7 @@ public:
         {
             try
             {
-                const _col_Nget* p = dynamic_cast<const _col_Nget*>(&(std::use_facet< _Nget >(getloc())));
+                const _col_Nget* p = dynamic_cast<const _col_Nget*>(&(std::use_facet< _Nget >(_Base::getloc())));
                 if (p == 0)
                     _State |= std::ios_base::badbit;
                 else

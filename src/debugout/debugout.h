@@ -30,8 +30,8 @@ protected:
 
     virtual int sync()
     {
-        _Function::dprint(str().c_str());
-        _Tidy();
+        _Function::dprint(_Base::str().c_str());
+        _Base::_Tidy();
         return _Base::sync();
     }
 };
