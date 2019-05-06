@@ -12,7 +12,7 @@ static_assert(3 == 3, "This is not error.");
 
 #define COUNTER_STRING(a) COL_STRING(COL_GLUE(a, __COUNTER__))
 
-int main(int argc, char* argv[])
+int main()
 {
     std::cout << COUNTER_STRING(count_) << std::endl;
     std::cout << COUNTER_STRING(count_) << std::endl;

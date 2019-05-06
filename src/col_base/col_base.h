@@ -22,4 +22,6 @@ template< int n > struct __col_static_assert_base {};
 #define static_assert(exp, msg) __col_static_assert(exp, msg, __COUNTER__)
 #endif
 
+#define COL_UNREFERENCE_PARAMETER(p)    (p)
+
 #endif

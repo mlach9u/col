@@ -9,8 +9,10 @@ struct bin_num_put_operator
     template< typename _Vty >
     _OutIt operator()(_OutIt _Dest, std::ios_base& _Iosbase, _Elem _Fill, _Vty _Val) const
     {
-        int _Cch = (sizeof(_Vty) / sizeof(_Elem)) + (sizeof(_Vty) % sizeof(_Elem));
-        _Elem _Buff[(sizeof(_Vty) / sizeof(_Elem)) + (sizeof(_Vty) % sizeof(_Elem))];
+        COL_UNREFERENCE_PARAMETER(_Iosbase);
+        COL_UNREFERENCE_PARAMETER(_Fill);
+        const int _Cch = (sizeof(_Vty) / sizeof(_Elem)) + (sizeof(_Vty) % sizeof(_Elem));
+        _Elem _Buff[_Cch];
         memset(_Buff, 0, _Cch * sizeof(_Elem));
         memcpy(_Buff, &_Val, sizeof(_Vty));
         for (int i = 0; i < _Cch; i++, _Dest++)
@@ -25,8 +27,9 @@ struct bin_num_get_operator
     template< typename _Vty >
     _InIt operator()(_InIt _First, _InIt _Last, std::ios_base& _Iosbase, std::ios_base::iostate& _State, _Vty& _Val) const
     {
-        int _Cch = (sizeof(_Vty) / sizeof(_Elem)) + (sizeof(_Vty) % sizeof(_Elem));
-        _Elem _Buff[(sizeof(_Vty) / sizeof(_Elem)) + (sizeof(_Vty) % sizeof(_Elem))];
+        COL_UNREFERENCE_PARAMETER(_Iosbase);
+        const int _Cch = (sizeof(_Vty) / sizeof(_Elem)) + (sizeof(_Vty) % sizeof(_Elem));
+        _Elem _Buff[_Cch] = { 0, };
 
         int i;
         for (i = 0; (i < _Cch) && (_First != _Last); i++, _First++)
@@ -34,7 +37,7 @@ struct bin_num_get_operator
         if (_First == _Last)
         {
             _State |= std::ios_base::eofbit;
-            memset(&_Buff[i], _Elem(), ((_Cch - i) * sizeof(_Elem)));
+            memset(&_Buff[i], _Elem(), (((size_t)_Cch - i) * sizeof(_Elem)));
         }
         memcpy(&_Val, _Buff, sizeof(_Vty));
         return _First;

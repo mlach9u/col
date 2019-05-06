@@ -7,7 +7,7 @@
 
 int __col_stream_index__ = std::ios_base::xalloc();
 
-int main(int argc, char* argv[])
+int main()
 {
     bool b = false;
     short s = 1;
@@ -47,10 +47,10 @@ int main(int argc, char* argv[])
     }
 
     const char* p = bb.ptr();
-    int cb = bb.size();
+    size_t cb = bb.size();
 
     std::cout << std::hex;
-    for (int _i = 0; _i < cb; _i++)
+    for (size_t _i = 0; _i < cb; _i++)
         std::cout << (int)p[_i] << ' ';
     std::cout << std::dec << std::endl;
 

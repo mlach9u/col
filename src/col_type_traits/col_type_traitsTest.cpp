@@ -7,7 +7,7 @@
 
 #define PRINT_IS_CHAR(t) COL_STRING(t) << " = " << (is_char< t >::value ? "true" : "false")
 
-int main(int argc, char* argv[])
+int main()
 {
     std::cout << PRINT_IS_CHAR(char) << std::endl;
     std::cout << PRINT_IS_CHAR(wchar_t) << std::endl;

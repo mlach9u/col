@@ -8,6 +8,9 @@
 
 #include <algorithm>
 
+#include <cctype>
+#include <cwctype>
+
 #ifdef _MSC_VER
 
 #ifndef __STRINGT_INCLUSION_CODECVT__

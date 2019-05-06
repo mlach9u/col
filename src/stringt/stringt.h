@@ -137,13 +137,13 @@ public:
 public:
     const _ThisX& tolower()
     {
-        std::transform(_Base::begin(), _Base::end(), _Base::begin(), ::tolower);
+        std::transform(_Base::begin(), _Base::end(), _Base::begin(), _Implement::tolower);
         return *this;
     }
 
     const _ThisX& toupper()
     {
-        std::transform(_Base::begin(), _Base::end(), _Base::begin(), ::toupper);
+        std::transform(_Base::begin(), _Base::end(), _Base::begin(), _Implement::toupper);
         return *this;
     }
 

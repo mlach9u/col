@@ -11,7 +11,7 @@
 #ifdef __AVOID_STL4017__
 enum CodePageFlag
 {
-    cpfAutoDetect       = 0x80000000,     // Auto detect UTF-8 or MBCS
+    cpfAutoDetect       = 0x00010000,     // Auto detect UTF-8 or MBCS
 
     cpfFlagMask         = 0xFFFF0000,
     cpfCodePageMask     = 0x0000FFFF,
@@ -40,12 +40,12 @@ size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT 
     size_t cchSrc = strlen(lpszSrc);
     if (nCodePage & cpfAutoDetect)
     {
-        nRet = MultiByteToWideChar(cpnUTF8, MB_ERR_INVALID_CHARS, lpszSrc, cchSrc, lpDst, cchDstMax);
+        nRet = MultiByteToWideChar(cpnUTF8, MB_ERR_INVALID_CHARS, lpszSrc, (int)cchSrc, lpDst, (int)cchDstMax);
     }
 
     if (nRet == 0)
     {
-        nRet = MultiByteToWideChar(nCodePage & cpfCodePageMask, 0, lpszSrc, cchSrc, lpDst, cchDstMax);
+        nRet = MultiByteToWideChar(nCodePage & cpfCodePageMask, 0, lpszSrc, (int)cchSrc, lpDst, (int)cchDstMax);
     }
     return ((nRet == 0) ? (size_t )-1 : nRet);
 #else
@@ -56,7 +56,7 @@ size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT 
 size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax, UINT nCodePage)
 {
 #ifdef __AVOID_STL4017__
-    size_t nRet = WideCharToMultiByte(nCodePage & cpfCodePageMask, 0, lpszSrc, wcslen(lpszSrc), lpDst, cchDstMax, NULL, NULL);
+    size_t nRet = WideCharToMultiByte(nCodePage & cpfCodePageMask, 0, lpszSrc, (int)wcslen(lpszSrc), lpDst, (int)cchDstMax, NULL, NULL);
     return ((nRet == 0) ? (size_t )-1 : nRet);
 #else
     return wcstombs(lpDst, lpszSrc, cchDstMax);
@@ -86,6 +86,16 @@ struct CharType_Function
     {
         return col_wcstombs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
+
+    static _ElemX toupper(_ElemX e)
+    {
+        return (_ElemX)std::toupper((int)e);
+    }
+
+    static _ElemX tolower(_ElemX e)
+    {
+        return (_ElemX)std::tolower((int)e);
+    }
 };
 
 template<>
@@ -107,6 +117,16 @@ struct CharType_Function< wchar_t >
     static size_t ytox(_ElemX* lpszDst, const _ElemY* lpszSrc, size_t cchDstMax, UINT nCodePage)
     {
         return col_mbstowcs(lpszDst, lpszSrc, cchDstMax, nCodePage);
+    }
+
+    static _ElemX toupper(_ElemX e)
+    {
+        return (_ElemX)std::towupper((wint_t)e);
+    }
+
+    static _ElemX tolower(_ElemX e)
+    {
+        return (_ElemX)std::towlower((wint_t)e);
     }
 };
 

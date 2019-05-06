@@ -25,7 +25,7 @@ void print(_Ty t)
     std::cout << typeid(_Ty).name() << " : " << t << std::endl;
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     try
     {

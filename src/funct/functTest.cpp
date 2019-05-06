@@ -7,7 +7,7 @@
 #include <algorithm>
 #include "funct.h"
 
-int main(int argc, char* argv[])
+int main()
 {
     std::string str("tEsT stRINg");
 
@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
             range(std::greater_equal< char >(), 'A', std::less_equal< char >(), 'Z'),
             std::bind2nd(
                 complex_assignment(std::plus< char >()),
-                'a' - 'A'
+                (char)('a' - 'A')
             )
         )
     );
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
             range(std::greater_equal< char >(), 'a', std::less_equal< char >(), 'z'),
             std::bind2nd(
                 complex_assignment(std::minus< char >()),
-                'a' - 'A'
+                (char)('a' - 'A')
             )
         )
     );

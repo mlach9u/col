@@ -141,7 +141,7 @@ void testTolowerandToupper(basic_string< _Elem > & str)
     std::cout << "ToUpper : " << string(basic_string< _Elem >(str).toupper()) << std::endl;
 }
 
-int main(int argc, char* argv[])
+int main()
 {
 #ifndef __AVOID_STL4017__
     //setlocale(LC_ALL, "ko-KR");		// You should set locale information.
@@ -150,7 +150,8 @@ int main(int argc, char* argv[])
 
     {
         // Sample text - Korean
-        char szString[7] = { (char)0xB9, (char)0xAE, (char)0xC0, (char)0xDA, (char)0xBF, (char)0xAD, (char)0x00 };
+
+        wchar_t szString[4] = { (wchar_t)0xBB38, (wchar_t)0xC790, (wchar_t)0xC5F4, (wchar_t)0x0000 };
 
         string strBaseANSI(szString);
         std::cout << "==== Test from ANSI string ====" << std::endl;

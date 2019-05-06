@@ -29,7 +29,7 @@ void read(const std::basic_string< _Elem >& _Name, _Ty& _Data)
     bis >> _Data;
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     {
         std::tuple< int, double, std::string,
