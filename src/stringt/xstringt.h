@@ -33,35 +33,38 @@ enum CodePageNumber
     cpnLast = 0
 };
 
-size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT nCodePage)
+struct Function_Base
 {
+	static size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT nCodePage)
+	{
 #ifdef __AVOID_STL4017__
-    size_t nRet = 0;
-    size_t cchSrc = strlen(lpszSrc);
-    if (nCodePage & cpfAutoDetect)
-    {
-        nRet = MultiByteToWideChar(cpnUTF8, MB_ERR_INVALID_CHARS, lpszSrc, (int)cchSrc, lpDst, (int)cchDstMax);
-    }
+		size_t nRet = 0;
+		size_t cchSrc = strlen(lpszSrc);
+		if (nCodePage & cpfAutoDetect)
+		{
+			nRet = MultiByteToWideChar(cpnUTF8, MB_ERR_INVALID_CHARS, lpszSrc, (int)cchSrc, lpDst, (int)cchDstMax);
+		}
 
-    if (nRet == 0)
-    {
-        nRet = MultiByteToWideChar(nCodePage & cpfCodePageMask, 0, lpszSrc, (int)cchSrc, lpDst, (int)cchDstMax);
-    }
-    return ((nRet == 0) ? (size_t )-1 : nRet);
+		if (nRet == 0)
+		{
+			nRet = MultiByteToWideChar(nCodePage & cpfCodePageMask, 0, lpszSrc, (int)cchSrc, lpDst, (int)cchDstMax);
+		}
+		return ((nRet == 0) ? (size_t)-1 : nRet);
 #else
-    return mbstowcs(lpDst, lpszSrc, cchDstMax);
+		return mbstowcs(lpDst, lpszSrc, cchDstMax);
 #endif
-}
+	}
 
-size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax, UINT nCodePage)
-{
+	static size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax, UINT nCodePage)
+	{
 #ifdef __AVOID_STL4017__
-    size_t nRet = WideCharToMultiByte(nCodePage & cpfCodePageMask, 0, lpszSrc, (int)wcslen(lpszSrc), lpDst, (int)cchDstMax, NULL, NULL);
-    return ((nRet == 0) ? (size_t )-1 : nRet);
+		size_t nRet = WideCharToMultiByte(nCodePage & cpfCodePageMask, 0, lpszSrc, (int)wcslen(lpszSrc), lpDst, (int)cchDstMax, NULL, NULL);
+		return ((nRet == 0) ? (size_t)-1 : nRet);
 #else
-    return wcstombs(lpDst, lpszSrc, cchDstMax);
+		return wcstombs(lpDst, lpszSrc, cchDstMax);
 #endif
-}
+	}
+};
 
 template< typename _Elem = char >
 struct CharType_Function
@@ -79,12 +82,12 @@ struct CharType_Function
 
     static size_t xtoy(_ElemY * lpszDst, const _ElemX * lpszSrc, size_t cchDstMax, UINT nCodePage)
     {
-        return col_mbstowcs(lpszDst, lpszSrc, cchDstMax, nCodePage);
+        return Function_Base::col_mbstowcs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
 
     static size_t ytox(_ElemX * lpszDst, const _ElemY * lpszSrc, size_t cchDstMax, UINT nCodePage)
     {
-        return col_wcstombs(lpszDst, lpszSrc, cchDstMax, nCodePage);
+        return Function_Base::col_wcstombs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
 
     static _ElemX toupper(_ElemX e)
@@ -111,12 +114,12 @@ struct CharType_Function< wchar_t >
 
     static size_t xtoy(_ElemY* lpszDst, const _ElemX* lpszSrc, size_t cchDstMax, UINT nCodePage)
     {
-        return col_wcstombs(lpszDst, lpszSrc, cchDstMax, nCodePage);
+        return Function_Base::col_wcstombs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
 
     static size_t ytox(_ElemX* lpszDst, const _ElemY* lpszSrc, size_t cchDstMax, UINT nCodePage)
     {
-        return col_mbstowcs(lpszDst, lpszSrc, cchDstMax, nCodePage);
+        return Function_Base::col_mbstowcs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
 
     static _ElemX toupper(_ElemX e)
