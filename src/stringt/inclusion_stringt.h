@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <cstring>
 
 #include <algorithm>
 
@@ -34,6 +35,10 @@
 #endif
 
 #if __STRINGT_INCLUSION_CODECVT__
+#ifdef __linux__
+#define _CODECVT_
+#endif
+#include <locale>
 #include <codecvt>
 #endif
 
@@ -41,7 +46,7 @@
 #include <Windows.h>
 #endif
 
-#include "..\\col_base\\col_base.h"
-#include "..\\col_type_traits\\inclusion_col_type_traits.h"
+#include "../col_base/col_base.h"
+#include "../col_type_traits/inclusion_col_type_traits.h"
 
 #endif

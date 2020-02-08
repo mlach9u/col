@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "..\\col_base\\col_base.h"
-#include "..\\col_type_traits\\inclusion_col_type_traits.h"
+#include "../col_base/col_base.h"
+#include "../col_type_traits/inclusion_col_type_traits.h"
 
 #endif

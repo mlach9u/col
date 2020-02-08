@@ -2,7 +2,7 @@
 #define __XSTRINGT_H__
 
 #include "inclusion_stringt.h"
-#include "..\\col_type_traits\\col_type_traits.h"
+#include "../col_type_traits/col_type_traits.h"
 
 #ifdef _WINDOWS_
 #define __AVOID_STL4017__   // https://devblogs.microsoft.com/cppblog/c17-feature-removals-and-deprecations/
@@ -35,7 +35,7 @@ enum CodePageNumber
 
 struct Function_Base
 {
-	static size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, UINT nCodePage)
+	static size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, unsigned int nCodePage)
 	{
 #ifdef __AVOID_STL4017__
 		size_t nRet = 0;
@@ -55,7 +55,7 @@ struct Function_Base
 #endif
 	}
 
-	static size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax, UINT nCodePage)
+	static size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax, unsigned int nCodePage)
 	{
 #ifdef __AVOID_STL4017__
 		size_t nRet = WideCharToMultiByte(nCodePage & cpfCodePageMask, 0, lpszSrc, (int)wcslen(lpszSrc), lpDst, (int)cchDstMax, NULL, NULL);
@@ -80,12 +80,12 @@ struct CharType_Function
         return nRet;
     }
 
-    static size_t xtoy(_ElemY * lpszDst, const _ElemX * lpszSrc, size_t cchDstMax, UINT nCodePage)
+    static size_t xtoy(_ElemY * lpszDst, const _ElemX * lpszSrc, size_t cchDstMax, unsigned int nCodePage)
     {
         return Function_Base::col_mbstowcs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
 
-    static size_t ytox(_ElemX * lpszDst, const _ElemY * lpszSrc, size_t cchDstMax, UINT nCodePage)
+    static size_t ytox(_ElemX * lpszDst, const _ElemY * lpszSrc, size_t cchDstMax, unsigned int nCodePage)
     {
         return Function_Base::col_wcstombs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
@@ -112,12 +112,12 @@ struct CharType_Function< wchar_t >
         return vswprintf(lpszDst, cchMax, lpszFormat, args);
     }
 
-    static size_t xtoy(_ElemY* lpszDst, const _ElemX* lpszSrc, size_t cchDstMax, UINT nCodePage)
+    static size_t xtoy(_ElemY* lpszDst, const _ElemX* lpszSrc, size_t cchDstMax, unsigned int nCodePage)
     {
         return Function_Base::col_wcstombs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
 
-    static size_t ytox(_ElemX* lpszDst, const _ElemY* lpszSrc, size_t cchDstMax, UINT nCodePage)
+    static size_t ytox(_ElemX* lpszDst, const _ElemY* lpszSrc, size_t cchDstMax, unsigned int nCodePage)
     {
         return Function_Base::col_mbstowcs(lpszDst, lpszSrc, cchDstMax, nCodePage);
     }
@@ -163,7 +163,7 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
         delete[] pszBuffer;
     }
 
-    static void xtoy(_StrY & strDst, const _ElemX * lpszSrc, UINT nCodePage)
+    static void xtoy(_StrY & strDst, const _ElemX * lpszSrc, unsigned int nCodePage)
     {
         size_t cch = _Base::xtoy(NULL, lpszSrc, 0, nCodePage);
         if (cch != (size_t)-1)
@@ -178,12 +178,12 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
         }
     }
 
-    static void xtoy(_StrY & strDst, const _StrX & strSrc, UINT nCodePage)
+    static void xtoy(_StrY & strDst, const _StrX & strSrc, unsigned int nCodePage)
     {
         xtoy(strDst, strSrc.c_str(), nCodePage);
     }
 
-    static void ytox(_StrX & strDst, const _ElemY * lpszSrc, UINT nCodePage)
+    static void ytox(_StrX & strDst, const _ElemY * lpszSrc, unsigned int nCodePage)
     {
         size_t cch = _Base::ytox(NULL, lpszSrc, 0, nCodePage);
         if (cch != (size_t)-1)
@@ -198,7 +198,7 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
         }
     }
 
-    static void ytox(_StrX & strDst, const _StrY & strSrc, UINT nCodePage)
+    static void ytox(_StrX & strDst, const _StrY & strSrc, unsigned int nCodePage)
     {
         ytox(strDst, strSrc.c_str(), nCodePage);
     }

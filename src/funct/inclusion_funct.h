@@ -3,6 +3,6 @@
 
 #include <functional>
 
-#include "..\\col_base\\col_base.h"
+#include "../col_base/col_base.h"
 
 #endif

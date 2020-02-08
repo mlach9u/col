@@ -73,20 +73,20 @@ public:
     }
 
 public:
-    _StrY toY(UINT nCodePage = cpnDefault) const
+    _StrY toY(unsigned int nCodePage = cpnDefault) const
     {
         _StrY strRet;
         _Implement::xtoy(strRet, *this, nCodePage);
         return strRet;
     }
 
-    const _StrX& fromY(const _ElemY* lpszSrc, UINT nCodePage = cpnDefault)
+    const _StrX& fromY(const _ElemY* lpszSrc, unsigned int nCodePage = cpnDefault)
     {
         _Implement::ytox(*this, lpszSrc, nCodePage);
         return *this;
     }
 
-    const _StrX& fromY(const _StrY& strSrc, UINT nCodePage = cpnDefault)
+    const _StrX& fromY(const _StrY& strSrc, unsigned int nCodePage = cpnDefault)
     {
         return fromY(strSrc.c_str(), nCodePage);
     }

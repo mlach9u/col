@@ -2,7 +2,7 @@
 #define __COL_XSTREAM_H__
 
 #include "inclusion_col_stream.h"
-#include "..\\col_type_traits\\col_type_traits.h"
+#include "../col_type_traits/col_type_traits.h"
 
 template< typename _Elem, typename _OutIt >
 class num_put_interface : public std::num_put< _Elem, _OutIt >
