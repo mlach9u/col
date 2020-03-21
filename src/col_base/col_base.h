@@ -24,4 +24,12 @@ template< int n > struct __col_static_assert_base {};
 
 #define COL_UNREFERENCE_PARAMETER(p)    (p)
 
+#ifdef _WIN32
+#ifndef CDECL
+#define CDECL __cdecl
+#endif
+#elif __linux__
+#define CDECL
+#endif
+
 #endif

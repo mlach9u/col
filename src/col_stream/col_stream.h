@@ -20,10 +20,10 @@ class basic_ostream : public std::basic_ostream< _Elem, _Traits >
 public:
     typedef basic_ostream< _Elem, _Traits > _Myt;
     typedef std::basic_ostream< _Elem, _Traits > _Base;
-    typedef typename _Base::_Myios _Myios;
-    typedef typename _Base::_Mysb _Mysb;
-    typedef typename _Base::_Iter _Iter;
-    typedef typename _Base::_Nput _Nput;
+    typedef std::basic_ios<_Elem, _Traits> _Myios;
+    typedef std::basic_streambuf<_Elem, _Traits> _Mysb;
+	typedef std::ostreambuf_iterator<_Elem, _Traits> _Iter;
+	typedef std::num_put<_Elem, _Iter> _Nput;
 
     typedef num_put_interface< _Elem, _Iter > _col_Nput;
 
@@ -57,7 +57,7 @@ public:
             }
             catch (...)
             {
-                _Myios::setstate(std::ios_base::badbit, true);
+                _Myios::setstate(std::ios_base::badbit);
             }
         }
 
@@ -81,22 +81,22 @@ public:
     _Myt& operator<<(double _Val) { return _Put_arithmetic(_Val); }
     _Myt& operator<<(long double _Val) { return _Put_arithmetic(_Val); }
 
-    _Myt& operator<<(_Myt & (__cdecl * _Pfn)(_Myt&))
+    _Myt& operator<<(_Myt & (CDECL * _Pfn)(_Myt&))
     {
         return ((*_Pfn)(*this));
     }
 
-    _Myt& operator<<(_Base & (__cdecl * _Pfn)(_Base&))
+    _Myt& operator<<(_Base & (CDECL * _Pfn)(_Base&))
     {
         _Base::operator<<(_Pfn); return *this;
     }
 
-    _Myt& operator<<(_Myios & (__cdecl * _Pfn)(_Myios&))
+    _Myt& operator<<(_Myios & (CDECL * _Pfn)(_Myios&))
     {
         _Base::operator<<(_Pfn); return *this;
     }
 
-    _Myt& operator<<(std::ios_base & (__cdecl * _Pfn)(std::ios_base&))
+    _Myt& operator<<(std::ios_base & (CDECL * _Pfn)(std::ios_base&))
     {
         _Base::operator<<(_Pfn); return *this;
     }
@@ -113,10 +113,10 @@ class basic_istream : public std::basic_istream< _Elem, _Traits >
 public:
     typedef basic_istream< _Elem, _Traits > _Myt;
     typedef std::basic_istream< _Elem, _Traits > _Base;
-    typedef typename _Base::_Myios _Myios;
-    typedef typename _Base::_Mysb _Mysb;
-    typedef typename _Base::_Iter _Iter;
-    typedef typename _Base::_Nget _Nget;
+	typedef std::basic_ios<_Elem, _Traits> _Myios;
+	typedef std::basic_streambuf<_Elem, _Traits> _Mysb;
+	typedef std::istreambuf_iterator<_Elem, _Traits> _Iter;
+	typedef std::num_get<_Elem, _Iter> _Nget;
 
     typedef num_get_interface< _Elem, _Iter > _col_Nget;
 
@@ -152,7 +152,7 @@ public:
             }
             catch (...)
             {
-                _Myios::setstate(std::ios_base::badbit, true);
+                _Myios::setstate(std::ios_base::badbit);
             }
         }
 
@@ -176,22 +176,22 @@ public:
     _Myt& operator>>(double& _Val) { return _Get_arithmetic(_Val); }
     _Myt& operator>>(long double& _Val) { return _Get_arithmetic(_Val); }
 
-    _Myt& operator>>(_Myt & (__cdecl * _Pfn)(_Myt&))
+    _Myt& operator>>(_Myt & (CDECL * _Pfn)(_Myt&))
     {
         return ((*_Pfn)(*this));
     }
 
-    _Myt& operator>>(_Base & (__cdecl * _Pfn)(_Base&))
+    _Myt& operator>>(_Base & (CDECL * _Pfn)(_Base&))
     {
         _Base::operator>>(_Pfn); return *this;
     }
 
-    _Myt& operator>>(_Myios & (__cdecl * _Pfn)(_Myios&))
+    _Myt& operator>>(_Myios & (CDECL * _Pfn)(_Myios&))
     {
         _Base::operator>>(_Pfn); return *this;
     }
 
-    _Myt& operator>>(std::ios_base & (__cdecl * _Pfn)(std::ios_base&))
+    _Myt& operator>>(std::ios_base & (CDECL * _Pfn)(std::ios_base&))
     {
         _Base::operator>>(_Pfn); return *this;
     }

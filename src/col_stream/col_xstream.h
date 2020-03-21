@@ -31,7 +31,7 @@ public:
 };
 
 template< typename _Elem, typename _OutIt,
-    template< typename _Elem, typename _OutIt > class _NputOper
+    template< typename intEl, typename intIt > class _NputOper
 >
 class num_put : public num_put_interface< _Elem, _OutIt >
 {
@@ -129,7 +129,7 @@ public:
 };
 
 template< typename _Elem, typename _InIt,
-    template< typename _Elem, typename _InIt > class _NgetOper
+    template< typename intEl, typename intIt > class _NgetOper
 >
 class num_get : public num_get_interface< _Elem, _InIt >
 {

@@ -3,6 +3,7 @@
 #endif
 
 #include <iostream>
+#include "../stringt/stringt.h"
 #include "tvalue.h"
 
 struct date
@@ -23,6 +24,12 @@ template< typename _Ty >
 void print(_Ty t)
 {
     std::cout << typeid(_Ty).name() << " : " << t << std::endl;
+}
+
+template< typename _Ty >
+void wprint(_Ty t)
+{
+    std::wcout << wstring(typeid(_Ty).name()) << L" : " << t << std::endl;
 }
 
 int main()
@@ -53,6 +60,11 @@ int main()
         print<const char*>(v);
         print<std::string>(v);
         print<const std::string&>(v);
+
+        v = L"hello";
+        wprint<const wchar_t*>(v);
+        wprint<std::wstring>(v);
+        wprint<const std::wstring&>(v);
     }
     catch (std::exception & e)
     {

@@ -25,7 +25,7 @@ basic_bistream< _Elem, _Traits >& operator >> (basic_bistream< _Elem, _Traits >&
     for (; ulSize > 0; --ulSize, _Meta = _Istr.rdbuf()->snextc())
     {
         if (_Traits::eq_int_type(_Traits::eof(), _Meta))
-            throw std::exception("End of file");
+            throw std::runtime_error("End of file");
         else
             _Str.append(1, _Traits::to_char_type(_Meta));
     }
@@ -140,7 +140,7 @@ basic_bistream< _Elem, _Traits >& operator >> (basic_bistream< _Elem, _Traits > 
     for (unsigned long i = 0; i < ulCount; i++)
     {
         _Istr >> k >> t;
-        _Map.insert(std::map< _Kty, _Ty, _Pr, _Alloc >::value_type(k, t));
+        _Map.insert(std::make_pair(k, t));
     }
 
     return _Istr;
@@ -148,30 +148,48 @@ basic_bistream< _Elem, _Traits >& operator >> (basic_bistream< _Elem, _Traits > 
 #endif
 
 #ifdef _TUPLE_
-template< typename _Elem, typename _Traits >
-basic_bostream< _Elem, _Traits >& operator << (basic_bostream< _Elem, _Traits > & _Ostr, const std::tuple<>&)
+template<typename _Elem, typename _Traits, size_t _I, typename... _Rest>
+typename enable_if<_I == sizeof...(_Rest), basic_bostream<_Elem, _Traits>>::type&
+__out_tuple(basic_bostream<_Elem, _Traits>& _Ostr, const std::tuple<_Rest...>& _Tuple)
 {
+    COL_UNREFERENCE_PARAMETER(_Tuple);
     return _Ostr;
 }
 
-template< typename _Elem, typename _Traits >
-basic_bistream< _Elem, _Traits >& operator >> (basic_bistream< _Elem, _Traits > & _Istr, std::tuple<>&)
+template<typename _Elem, typename _Traits, size_t _I, typename... _Rest>
+typename enable_if<_I < sizeof...(_Rest), basic_bostream<_Elem, _Traits>>::type&
+__out_tuple(basic_bostream<_Elem, _Traits>& _Ostr, const std::tuple<_Rest...>& _Tuple)
 {
+    _Ostr << std::get<_I>(_Tuple);
+    return __out_tuple<_Elem, _Traits, _I + 1, _Rest...>(_Ostr, _Tuple);
+}
+
+template<typename _Elem, typename _Traits, typename... _Rest>
+basic_bostream<_Elem, _Traits>& operator << (basic_bostream<_Elem, _Traits>& _Ostr, const std::tuple<_Rest...>& _Tuple)
+{
+    return __out_tuple<_Elem, _Traits, 0, _Rest...>(_Ostr, _Tuple);
+}
+
+template<typename _Elem, typename _Traits, size_t _I, typename... _Rest>
+typename enable_if<_I == sizeof...(_Rest), basic_bistream<_Elem, _Traits>>::type&
+__in_tuple(basic_bistream<_Elem, _Traits>& _Istr, std::tuple<_Rest...>& _Tuple)
+{
+    COL_UNREFERENCE_PARAMETER(_Tuple);
     return _Istr;
 }
 
-template< typename _Elem, typename _Traits, typename _This, typename... _Rest >
-basic_bostream< _Elem, _Traits >& operator << (basic_bostream< _Elem, _Traits > & _Ostr, const std::tuple< _This, _Rest... > & _Tuple)
+template<typename _Elem, typename _Traits, size_t _I, typename... _Rest>
+typename enable_if<_I < sizeof...(_Rest), basic_bistream<_Elem, _Traits>>::type&
+__in_tuple(basic_bistream<_Elem, _Traits>& _Istr, std::tuple<_Rest...>& _Tuple)
 {
-    _Ostr << _Tuple._Myfirst._Val << _Tuple._Get_rest();
-    return _Ostr;
+    _Istr >> std::get<_I>(_Tuple);
+    return __in_tuple<_Elem, _Traits, _I + 1, _Rest...>(_Istr, _Tuple);
 }
 
-template< typename _Elem, typename _Traits, typename _This, typename... _Rest >
-basic_bistream< _Elem, _Traits >& operator >> (basic_bistream< _Elem, _Traits > & _Istr, std::tuple< _This, _Rest... > & _Tuple)
+template<typename _Elem, typename _Traits, typename... _Rest>
+basic_bistream<_Elem, _Traits>& operator >> (basic_bistream<_Elem, _Traits>& _Istr, std::tuple<_Rest...>& _Tuple)
 {
-    _Istr >> _Tuple._Myfirst._Val >> _Tuple._Get_rest();
-    return _Istr;
+    return __in_tuple<_Elem, _Traits, 0, _Rest...>(_Istr, _Tuple);
 }
 #endif
 

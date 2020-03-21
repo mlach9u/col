@@ -45,7 +45,7 @@ struct bin_num_get_operator
 };
 
 template< typename _Elem, typename _Traits >
-std::basic_ostream< _Elem, _Traits >& __cdecl bins(std::basic_ostream< _Elem, _Traits >& _Ostr)
+std::basic_ostream< _Elem, _Traits >& CDECL bins(std::basic_ostream< _Elem, _Traits >& _Ostr)
 {
     typedef typename basic_ostream< _Elem, _Traits >::_Iter _Iter;
     typedef typename basic_ostream< _Elem, _Traits >::_Nput _Nput;
@@ -60,7 +60,7 @@ std::basic_ostream< _Elem, _Traits >& __cdecl bins(std::basic_ostream< _Elem, _T
 }
 
 template< typename _Elem, typename _Traits >
-std::basic_ostream< _Elem, _Traits >& __cdecl nobins(std::basic_ostream< _Elem, _Traits > & _Ostr)
+std::basic_ostream< _Elem, _Traits >& CDECL nobins(std::basic_ostream< _Elem, _Traits > & _Ostr)
 {
     typedef typename basic_ostream< _Elem, _Traits >::_Nput _Nput;
     typedef typename basic_ostream< _Elem, _Traits >::_col_Nput _col_Nput;
@@ -72,7 +72,7 @@ std::basic_ostream< _Elem, _Traits >& __cdecl nobins(std::basic_ostream< _Elem, 
 }
 
 template< typename _Elem, typename _Traits >
-std::basic_istream< _Elem, _Traits >& __cdecl bins(std::basic_istream< _Elem, _Traits > & _Istr)
+std::basic_istream< _Elem, _Traits >& CDECL bins(std::basic_istream< _Elem, _Traits > & _Istr)
 {
     typedef typename basic_istream< _Elem, _Traits >::_Iter _Iter;
     typedef typename basic_istream< _Elem, _Traits >::_Nget _Nget;
@@ -88,7 +88,7 @@ std::basic_istream< _Elem, _Traits >& __cdecl bins(std::basic_istream< _Elem, _T
 }
 
 template< typename _Elem, typename _Traits >
-std::basic_istream< _Elem, _Traits >& __cdecl nobins(std::basic_istream< _Elem, _Traits > & _Istr)
+std::basic_istream< _Elem, _Traits >& CDECL nobins(std::basic_istream< _Elem, _Traits > & _Istr)
 {
     typedef typename basic_istream< _Elem, _Traits >::_Nget _Nget;
     typedef typename basic_istream< _Elem, _Traits >::_col_Nget _col_Nget;
@@ -105,7 +105,7 @@ class basic_binarybuf : public std::basic_stringbuf< _Elem, _Traits, _Alloc >
 {
 public:
     typedef std::basic_stringbuf< _Elem, _Traits, _Alloc > _Base;
-    typedef typename _Base::_Mystr _Mystr;
+    typedef std::basic_string<_Elem, _Traits, _Alloc> _Mystr;
 
     basic_binarybuf() {}
 
@@ -167,22 +167,22 @@ public:
     _Myt& operator<<(double _Val) { return _Put_arithmetic(_Val); }
     _Myt& operator<<(long double _Val) { return _Put_arithmetic(_Val); }
 
-    _Myt& operator<<(_Myt& (__cdecl* _Pfn)(_Myt&))
+    _Myt& operator<<(_Myt& (CDECL* _Pfn)(_Myt&))
     {
         return ((*_Pfn)(*this));
     }
 
-    _Myt& operator<<(_Base& (__cdecl* _Pfn)(_Base&))
+    _Myt& operator<<(_Base& (CDECL* _Pfn)(_Base&))
     {
         _Base::operator<<(_Pfn); return *this;
     }
 
-    _Myt& operator<<(_Myios& (__cdecl* _Pfn)(_Myios&))
+    _Myt& operator<<(_Myios& (CDECL* _Pfn)(_Myios&))
     {
         _Base::operator<<(_Pfn); return *this;
     }
 
-    _Myt& operator<<(std::ios_base& (__cdecl* _Pfn)(std::ios_base&))
+    _Myt& operator<<(std::ios_base& (CDECL* _Pfn)(std::ios_base&))
     {
         _Base::operator<<(_Pfn); return *this;
     }
@@ -231,22 +231,22 @@ public:
     _Myt& operator >> (double& _Val) { return _Get_arithmetic(_Val); }
     _Myt& operator >> (long double& _Val) { return _Get_arithmetic(_Val); }
 
-    _Myt& operator >> (_Myt& (__cdecl* _Pfn)(_Myt&))
+    _Myt& operator >> (_Myt& (CDECL* _Pfn)(_Myt&))
     {
         return ((*_Pfn)(*this));
     }
 
-    _Myt& operator >> (_Base& (__cdecl* _Pfn)(_Base&))
+    _Myt& operator >> (_Base& (CDECL* _Pfn)(_Base&))
     {
         _Base::operator >> (_Pfn); return *this;
     }
 
-    _Myt& operator >> (_Myios& (__cdecl* _Pfn)(_Myios&))
+    _Myt& operator >> (_Myios& (CDECL* _Pfn)(_Myios&))
     {
         _Base::operator >> (_Pfn); return *this;
     }
 
-    _Myt& operator >> (std::ios_base& (__cdecl* _Pfn)(std::ios_base&))
+    _Myt& operator >> (std::ios_base& (CDECL* _Pfn)(std::ios_base&))
     {
         _Base::operator >> (_Pfn); return *this;
     }
