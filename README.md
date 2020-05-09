@@ -1,6 +1,8 @@
 
 # Collection of libraries.
 
+![C/C++ CI](https://github.com/mlach9u/col/workflows/C/C++%20CI/badge.svg?branch=master)
+
 ---
 
 ## Notice
