@@ -109,7 +109,17 @@ struct CharType_Function< wchar_t >
 
     static int vsprintf(_ElemX* lpszDst, size_t cchMax, const _ElemX* lpszFormat, va_list args)
     {
-        return vswprintf(lpszDst, cchMax, lpszFormat, args);
+        std::wstring format(lpszFormat);
+        std::wstring::size_type start = 0;
+        while ((start = format.find_first_of(L'%', start)) != std::wstring::npos)
+        {
+            start++;
+            if (format[start] == L's' || format[start] == L'c')
+            {
+                format.insert(start, 1, L'l');
+            }
+        }
+        return vswprintf(lpszDst, cchMax, format.c_str(), args);
     }
 
     static size_t xtoy(_ElemY* lpszDst, const _ElemX* lpszSrc, size_t cchDstMax, unsigned int nCodePage)
@@ -147,10 +157,12 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
     {
         int nSize, nBufferSize = (int)(strFormat.size() * 2);
         _ElemX* pszBuffer = new _ElemX[nBufferSize];
+        va_list _v;
         do
         {
+            va_copy(_v, v);
             memset(pszBuffer, 0, nBufferSize * sizeof(_ElemX));
-            nSize = _Base::vsprintf(pszBuffer, nBufferSize - 1, strFormat.c_str(), v);
+            nSize = _Base::vsprintf(pszBuffer, nBufferSize - 1, strFormat.c_str(), _v);
             if (nSize == -1)
             {
                 delete[] pszBuffer;
