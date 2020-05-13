@@ -33,37 +33,63 @@ enum CodePageNumber
     cpnLast = 0
 };
 
+enum UnicodeNormalizationForm
+{
+    unfOther,
+    unfC, unfD, unfKC, unfKD,
+
+    unfCount
+};
+
 struct Function_Base
 {
-	static size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, unsigned int nCodePage)
-	{
+    static size_t col_mbstowcs(wchar_t* lpDst, const char* lpszSrc, size_t cchDstMax, unsigned int nCodePage)
+    {
 #ifdef __AVOID_STL4017__
-		size_t nRet = 0;
-		size_t cchSrc = strlen(lpszSrc);
-		if (nCodePage & cpfAutoDetect)
-		{
-			nRet = MultiByteToWideChar(cpnUTF8, MB_ERR_INVALID_CHARS, lpszSrc, (int)cchSrc, lpDst, (int)cchDstMax);
-		}
+        size_t nRet = 0;
+        size_t cchSrc = strlen(lpszSrc);
+        if (nCodePage & cpfAutoDetect)
+        {
+            nRet = MultiByteToWideChar(cpnUTF8, MB_ERR_INVALID_CHARS, lpszSrc, (int)cchSrc, lpDst, (int)cchDstMax);
+        }
 
-		if (nRet == 0)
-		{
-			nRet = MultiByteToWideChar(nCodePage & cpfCodePageMask, 0, lpszSrc, (int)cchSrc, lpDst, (int)cchDstMax);
-		}
-		return ((nRet == 0) ? (size_t)-1 : nRet);
+        if (nRet == 0)
+        {
+            nRet = MultiByteToWideChar(nCodePage & cpfCodePageMask, 0, lpszSrc, (int)cchSrc, lpDst, (int)cchDstMax);
+        }
+        return ((nRet == 0) ? (size_t)-1 : nRet);
 #else
-		return mbstowcs(lpDst, lpszSrc, cchDstMax);
+        return mbstowcs(lpDst, lpszSrc, cchDstMax);
 #endif
-	}
+    }
 
-	static size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax, unsigned int nCodePage)
-	{
+    static size_t col_wcstombs(char* lpDst, const wchar_t* lpszSrc, size_t cchDstMax, unsigned int nCodePage)
+    {
 #ifdef __AVOID_STL4017__
-		size_t nRet = WideCharToMultiByte(nCodePage & cpfCodePageMask, 0, lpszSrc, (int)wcslen(lpszSrc), lpDst, (int)cchDstMax, NULL, NULL);
-		return ((nRet == 0) ? (size_t)-1 : nRet);
+        size_t nRet = WideCharToMultiByte(nCodePage & cpfCodePageMask, 0, lpszSrc, (int)wcslen(lpszSrc), lpDst, (int)cchDstMax, NULL, NULL);
+        return ((nRet == 0) ? (size_t)-1 : nRet);
 #else
-		return wcstombs(lpDst, lpszSrc, cchDstMax);
+        return wcstombs(lpDst, lpszSrc, cchDstMax);
 #endif
-	}
+    }
+
+    static bool IsNormalizedString(UnicodeNormalizationForm unf, const wchar_t* lpszString)
+    {
+#ifdef _WINDOWS_
+        return (::IsNormalizedString((NORM_FORM)unf, lpszString, -1) != FALSE);
+#else
+        return true;
+#endif
+    }
+
+    static int NormalizeString(UnicodeNormalizationForm unf, const wchar_t* lpszSrc, wchar_t* lpDst, int cchDst)
+    {
+#ifdef _WINDOWS_
+        return ::NormalizeString((NORM_FORM)unf, lpszSrc, -1, lpDst, cchDst);
+#else
+        return wcslen(lpszSrc);
+#endif
+    }
 };
 
 template< typename _Elem = char >
@@ -98,6 +124,16 @@ struct CharType_Function
     static _ElemX tolower(_ElemX e)
     {
         return (_ElemX)std::tolower((int)e);
+    }
+
+    static bool is_normalized(UnicodeNormalizationForm, const _ElemX*)
+    {
+        return true;
+    }
+
+    static int normalize(UnicodeNormalizationForm, const _ElemX* lpszSrc, _ElemX*, int)
+    {
+        return strlen(lpszSrc);
     }
 };
 
@@ -140,6 +176,16 @@ struct CharType_Function< wchar_t >
     static _ElemX tolower(_ElemX e)
     {
         return (_ElemX)std::towlower((wint_t)e);
+    }
+
+    static bool is_normalized(UnicodeNormalizationForm unf, const _ElemX* lpsz)
+    {
+        return Function_Base::IsNormalizedString(unf, lpsz);
+    }
+
+    static int normalize(UnicodeNormalizationForm unf, const _ElemX* lpszSrc, _ElemX* lpDst, int cchDst)
+    {
+        return Function_Base::NormalizeString(unf, lpszSrc, lpDst, cchDst);
     }
 };
 
@@ -213,6 +259,23 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
     static void ytox(_StrX & strDst, const _StrY & strSrc, unsigned int nCodePage)
     {
         ytox(strDst, strSrc.c_str(), nCodePage);
+    }
+
+    static void normalize(_StrX& strDst, const _ElemX* lpszSrc, UnicodeNormalizationForm unf)
+    {
+        if (!_Base::is_normalized(unf, lpszSrc))
+        {
+            int cch = _Base::normalize(unf, lpszSrc, 0, 0);
+            if (0 < cch)
+            {
+                _ElemX* psz = new _ElemX[cch + 1];
+                if (_Base::normalize(unf, lpszSrc, psz, cch))
+                {
+                    strDst = psz;
+                }
+                delete[] psz;
+            }
+        }
     }
 };
 

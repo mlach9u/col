@@ -111,6 +111,14 @@ public:
     }
 
 public:
+    const _StrX& normalize(UnicodeNormalizationForm unf)
+    {
+        _StrX str;
+        _Implement::normalize(str, this->c_str(), unf);
+        return *this;
+    }
+
+public:
     const _ThisX& replace(const _ElemX* lpszFrom, const _ElemX* lpszTo)
     {
         size_type _Off;
