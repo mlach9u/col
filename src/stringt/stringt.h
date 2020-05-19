@@ -115,6 +115,7 @@ public:
     {
         _StrX str;
         _Implement::normalize(str, this->c_str(), unf);
+        _Base::assign(str);
         return *this;
     }
 

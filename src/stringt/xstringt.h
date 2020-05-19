@@ -263,7 +263,11 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
 
     static void normalize(_StrX& strDst, const _ElemX* lpszSrc, UnicodeNormalizationForm unf)
     {
-        if (!_Base::is_normalized(unf, lpszSrc))
+        if (_Base::is_normalized(unf, lpszSrc))
+        {
+            strDst = lpszSrc;
+        }
+        else
         {
             int cch = _Base::normalize(unf, lpszSrc, 0, 0);
             if (0 < cch)
