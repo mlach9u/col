@@ -38,7 +38,9 @@ public:
     basic_string() {}
     basic_string(const _ElemX* lpsz) : _Base(lpsz) {}
     basic_string(const _StrX& str) : _Base(str) {}
-    basic_string(const _ThisX& str) : _Base(str.c_str()) {}
+    basic_string(_StrX&& str) : _Base(std::move(str)) {}
+    basic_string(const _ThisX& str) : _Base(str) {}
+    basic_string(_ThisX&& str) : _Base(std::move(str)) {}
     basic_string(const _ElemY* lpsz) { fromY(lpsz); }
     basic_string(const _StrY& str) { fromY(str); }
     basic_string(const _ThisY& str) { fromY(str); }
@@ -162,7 +164,9 @@ public:
 public:
     const _Base& operator = (const _ElemX* lpsz) { _Base::assign(lpsz); return *this; }
     const _Base& operator = (const _StrX& str) { _Base::assign(str); return *this; }
+    const _Base& operator = (_StrX&& str) { _Base::assign(std::move(str)); return *this; }
     const _Base& operator = (const _ThisX& str) { _Base::assign(str); return *this; }
+    const _Base& operator = (_ThisX&& str) { _Base::assign(std::move(str)); return *this; }
     const _Base& operator = (const _ElemY* lpsz) { return fromY(lpsz); }
     const _Base& operator = (const _StrY& str) { return fromY(str); }
     const _Base& operator = (const _ThisY& str) { return fromY(str); }
