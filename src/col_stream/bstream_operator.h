@@ -149,7 +149,7 @@ basic_bistream< _Elem, _Traits >& operator >> (basic_bistream< _Elem, _Traits > 
 
 #ifdef _TUPLE_
 template<typename _Elem, typename _Traits, size_t _I, typename... _Rest>
-typename enable_if<_I == sizeof...(_Rest), basic_bostream<_Elem, _Traits>>::type&
+typename std::enable_if<_I == sizeof...(_Rest), basic_bostream<_Elem, _Traits>>::type&
 __out_tuple(basic_bostream<_Elem, _Traits>& _Ostr, const std::tuple<_Rest...>& _Tuple)
 {
     COL_UNREFERENCE_PARAMETER(_Tuple);
@@ -157,7 +157,7 @@ __out_tuple(basic_bostream<_Elem, _Traits>& _Ostr, const std::tuple<_Rest...>& _
 }
 
 template<typename _Elem, typename _Traits, size_t _I, typename... _Rest>
-typename enable_if<_I < sizeof...(_Rest), basic_bostream<_Elem, _Traits>>::type&
+typename std::enable_if<_I < sizeof...(_Rest), basic_bostream<_Elem, _Traits>>::type&
 __out_tuple(basic_bostream<_Elem, _Traits>& _Ostr, const std::tuple<_Rest...>& _Tuple)
 {
     _Ostr << std::get<_I>(_Tuple);
@@ -171,7 +171,7 @@ basic_bostream<_Elem, _Traits>& operator << (basic_bostream<_Elem, _Traits>& _Os
 }
 
 template<typename _Elem, typename _Traits, size_t _I, typename... _Rest>
-typename enable_if<_I == sizeof...(_Rest), basic_bistream<_Elem, _Traits>>::type&
+typename std::enable_if<_I == sizeof...(_Rest), basic_bistream<_Elem, _Traits>>::type&
 __in_tuple(basic_bistream<_Elem, _Traits>& _Istr, std::tuple<_Rest...>& _Tuple)
 {
     COL_UNREFERENCE_PARAMETER(_Tuple);
@@ -179,7 +179,7 @@ __in_tuple(basic_bistream<_Elem, _Traits>& _Istr, std::tuple<_Rest...>& _Tuple)
 }
 
 template<typename _Elem, typename _Traits, size_t _I, typename... _Rest>
-typename enable_if<_I < sizeof...(_Rest), basic_bistream<_Elem, _Traits>>::type&
+typename std::enable_if<_I < sizeof...(_Rest), basic_bistream<_Elem, _Traits>>::type&
 __in_tuple(basic_bistream<_Elem, _Traits>& _Istr, std::tuple<_Rest...>& _Tuple)
 {
     _Istr >> std::get<_I>(_Tuple);

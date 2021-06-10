@@ -19,7 +19,7 @@ using __COL_NS__ aligned_storage;
 using __COL_NS__ alignment_of;
 //using __COL_NS__ conditional;
 //using __COL_NS__ decay;
-using __COL_NS__ enable_if;
+//using __COL_NS__ enable_if;
 using __COL_NS__ extent;
 using __COL_NS__ false_type;
 using __COL_NS__ has_virtual_destructor;

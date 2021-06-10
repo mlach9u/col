@@ -32,4 +32,8 @@ template< int n > struct __col_static_assert_base {};
 #define CDECL
 #endif
 
+#ifndef va_copy
+#define va_copy(destination, source) ((destination) = (source))
+#endif
+
 #endif

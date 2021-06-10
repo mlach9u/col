@@ -73,11 +73,11 @@ struct tvalue
     typedef tvalue _Myt;
 
     template<typename _Ty>
-    typename enable_if<is_default<_Ty>::value, const _Myt>::type&
+    typename std::enable_if<is_default<_Ty>::value, const _Myt>::type&
     operator = (const _Ty& v) { return set_default(v); }
 
     template<typename _Ty>
-    typename enable_if<!is_default<_Ty>::value, const _Myt>::type&
+    typename std::enable_if<!is_default<_Ty>::value, const _Myt>::type&
     operator = (const _Ty& v) { return set_define(v); }
 
     template<typename _Elem> const _Myt& operator = (_Elem* v)
@@ -90,7 +90,7 @@ struct tvalue
     template<typename _Ty> operator _Ty() const { return as<_Ty>(); }
 
     template<typename _Ty, typename _Rt = typename remove_cv<typename remove_reference<_Ty>::type>::type>
-    typename enable_if<is_default<_Ty>::value && !is_pointer<_Ty>::value, _Ty>::type
+    typename std::enable_if<is_default<_Ty>::value && !is_pointer<_Ty>::value, _Ty>::type
     as() const
     {
         throwalloc();
@@ -98,7 +98,7 @@ struct tvalue
     }
 
     template<typename _Ty, typename _Rt = typename remove_cv<typename remove_pointer<_Ty>::type>::type>
-    typename enable_if<is_default<typename remove_pointer<_Ty>::type>::value && is_pointer<_Ty>::value, _Ty>::type
+    typename std::enable_if<is_default<typename remove_pointer<_Ty>::type>::value && is_pointer<_Ty>::value, _Ty>::type
     as() const
     {
         static_assert(!is_char<_Ty>::value, "_Ty must be character type");
@@ -107,7 +107,7 @@ struct tvalue
     }
 
     template<typename _Ty, typename _Rt = typename remove_cv<typename remove_reference<_Ty>::type>::type>
-    typename enable_if<!is_default<_Ty>::value && !is_pointer<_Ty>::value, _Ty>::type
+    typename std::enable_if<!is_default<_Ty>::value && !is_pointer<_Ty>::value, _Ty>::type
     as() const
     {
         throwalloc();
