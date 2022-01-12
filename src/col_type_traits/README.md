@@ -31,3 +31,13 @@ struct integral_pair;
 - `wchar_t`
 - `char16_t`
 - `char32_t`
+
+#### Trait class that identifies whether _Ty_ is a default type(`is_default`)
+
+- `bool`
+- `char`, `unsigned char`
+- `wchar_t`, `short`, `unsigned short`
+- `int`, `unsigned int`
+- `long`, `unsigned long`
+- `long long`, `unsigned long long`
+- `float`, `double`, `long double`
