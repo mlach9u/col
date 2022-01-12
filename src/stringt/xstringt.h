@@ -76,7 +76,15 @@ struct Function_Base
     static bool IsNormalizedString(UnicodeNormalizationForm unf, const wchar_t* lpszString)
     {
 #ifdef _WINDOWS_
-        return (::IsNormalizedString((NORM_FORM)unf, lpszString, -1) != FALSE);
+        NORM_FORM nf = NormalizationOther;
+        switch (unf)
+        {
+        case unfC:  nf = NormalizationC;    break;
+        case unfD:  nf = NormalizationD;    break;
+        case unfKC: nf = NormalizationKC;   break;
+        case unfKD: nf = NormalizationKD;   break;
+        }
+        return (::IsNormalizedString(nf, lpszString, -1) != FALSE);
 #else
         return true;
 #endif
