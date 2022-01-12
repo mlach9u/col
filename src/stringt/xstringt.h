@@ -208,7 +208,7 @@ struct CharType_Implement_Base : public CharType_Function< _Elem >
         {
             va_copy(_v, v);
             memset(pszBuffer, 0, nBufferSize * sizeof(_ElemX));
-            nSize = _Base::vsprintf(pszBuffer, nBufferSize - 1, strFormat.c_str(), _v);
+            nSize = _Base::vsprintf(pszBuffer, (size_t)nBufferSize - 1, strFormat.c_str(), _v);
             if (nSize == -1)
             {
                 delete[] pszBuffer;
