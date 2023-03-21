@@ -1,7 +1,7 @@
 
 # Collection of libraries.
 ---
-010-4409-5868 | obriagdu@naver.com | <https://www.github.com/mlach9u>
+<https://www.github.com/mlach9u>
 
 ## 라이선스
 이 프로젝트의 모든 코드는 직접 작성하였으며, Public Domain에 속합니다.
